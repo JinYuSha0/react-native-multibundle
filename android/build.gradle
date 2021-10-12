@@ -1,0 +1,65 @@
+buildscript {
+    if (project == rootProject) {
+        repositories {
+            google()
+            mavenCentral()
+            jcenter()
+        }
+
+        dependencies {
+            classpath 'com.android.tools.build:gradle:3.5.3'
+        }
+    }
+}
+
+apply plugin: 'com.android.library'
+
+def safeExtGet(prop, fallback) {
+    rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
+}
+
+android {
+    compileSdkVersion safeExtGet('Multibundle_compileSdkVersion', 29)
+    defaultConfig {
+        minSdkVersion safeExtGet('Multibundle_minSdkVersion', 16)
+        targetSdkVersion safeExtGet('Multibundle_targetSdkVersion', 29)
+        versionCode 1
+        versionName "1.0"
+        buildConfigField "String", "LOG_TAG", '"RN_MULTI_BUNDLE"'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+    lintOptions {
+        disable 'GradleCompatible'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+repositories {
+    mavenLocal()
+    maven {
+        // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+        url("$rootDir/../node_modules/react-native/android")
+    }
+    google()
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    implementation 'androidx.annotation:annotation:+'
+
+    //noinspection GradleDynamicVersion
+    implementation "com.facebook.react:react-native:+"  // From node_modules
+
+    implementation "com.jaeger.statusbarutil:library:1.5.1"
+    implementation "com.google.code.gson:gson:2.6.2"
+    implementation "net.lingala.zip4j:zip4j:2.9.0"
+}
