@@ -1,4 +1,4 @@
-package com.soul.rn.multibundle.iface;
+package com.soul.rn.multibundle.entity;
 
 public class MyResponse<T> {
     public T data;

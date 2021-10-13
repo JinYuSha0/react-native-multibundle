@@ -15,6 +15,8 @@ import com.facebook.react.bridge.ReactMarker;
 import com.facebook.react.bridge.ReactMarkerConstants;
 import com.facebook.react.common.LifecycleState;
 import com.facebook.react.PackageList;
+import com.soul.rn.multibundle.MultiBundle;
+import com.soul.rn.multibundle.iface.ReactNativeHostHolder;
 
 import java.util.List;
 
@@ -99,6 +101,17 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        mReactNativeHost = getReactNativeHost();
+        MultiBundle.setReactNativeHostHolder(new ReactNativeHostHolder() {
+            @Override
+            public ReactNativeHost getReactNativeHost() {
+                return mReactNativeHost;
+            }
 
+            @Override
+            public Boolean createReactContextInBackground() {
+                return true;
+            }
+        });
     }
 }

@@ -1,0 +1,16 @@
+{
+  "components": {
+    "common.android.bundle": {
+      "hash": "05a0ac8c7b71e58b2d8f4ba865b322af"
+    },
+    "home.buz.android.bundle": {
+      "hash": "368f23820d6a6b6b09ad34df27edff7f",
+      "componentName": "Home"
+    },
+    "test.buz.android.bundle": {
+      "hash": "a4b81c3541da896677b4eadd0e0606c4",
+      "componentName": "Test"
+    }
+  },
+  "timestamp": 1634097393302
+}

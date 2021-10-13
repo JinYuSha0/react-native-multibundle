@@ -136,8 +136,8 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
-        resValue("string","MultiBundleDefailtModuleName","http://192.168.8.99:3000")
-        resValue("string","MultiBundleServerHost","Home")
+        resValue("string","MultiBundleDefailtModuleName","Home")
+        resValue("string","MultiBundleServerHost","http://192.168.8.99:3000")
     }
     splits {
         abi {

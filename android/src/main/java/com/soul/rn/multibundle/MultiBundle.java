@@ -9,10 +9,10 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.ReactRootView;
 import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.JavaScriptModule;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;
@@ -26,7 +26,7 @@ import com.soul.rn.multibundle.constant.StorageKey;
 import com.soul.rn.multibundle.entity.Component;
 import com.soul.rn.multibundle.entity.ComponentSetting;
 import com.soul.rn.multibundle.iface.Callback;
-import com.soul.rn.multibundle.iface.MyResponse;
+import com.soul.rn.multibundle.entity.MyResponse;
 import com.soul.rn.multibundle.iface.ReactNativeHostHolder;
 import com.soul.rn.multibundle.utils.FileUtil;
 import com.soul.rn.multibundle.utils.Preferences;
@@ -67,7 +67,14 @@ public class MultiBundle implements ReactPackage {
   }
 
   public static void setReactNativeHostHolder(ReactNativeHostHolder reactNativeHostHolder) {
+    if (reactNativeHostHolder == null) return;;
     mReactNativeHostHolder = reactNativeHostHolder;
+    if (mReactNativeHostHolder.createReactContextInBackground() &&  reactNativeHostHolder.getReactNativeHost() != null) {
+      ReactInstanceManager reactInstanceManager = reactNativeHostHolder.getReactNativeHost().getReactInstanceManager();
+      if (!reactInstanceManager.hasStartedCreatingInitialContext()) {
+        reactInstanceManager.createReactContextInBackground();
+      }
+    }
   }
 
   public static void setReactRootView(Class<ReactRootView> reactRootViewClass) {
@@ -80,6 +87,7 @@ public class MultiBundle implements ReactPackage {
     params.putBoolean("goBack", true);
     Bundle bundle = createBundle(moduleName, statusBarMode, params);
     intent.putExtras(bundle);
+    activity.startActivity(intent);
   }
 
   public static Bundle createBundle(String moduleName, @Nullable Integer statusBarMode, @Nullable Bundle params) {
@@ -120,7 +128,6 @@ public class MultiBundle implements ReactPackage {
   }
 
   public static void checkUpdate(Context ctx, @Nullable Callback callback) {
-    if (mReactNativeHostHolder.getReactNativeHost() != null && mReactNativeHostHolder.getReactNativeHost().getUseDeveloperSupport()) return;
     try {
       final File downloadPath = ctx.getExternalFilesDir(null);
       final Context mContext = ctx;
