@@ -103,12 +103,12 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
     // 设置StatusBar样式
     setStatusBar(getBundle().params);
     mDelegate.onCreate(bundle);
+    final Activity currActivity = this;
+    ReactInstanceManager manager = mReactNativeHost.getReactInstanceManager();
     if (isDev) {
-      initView();
+     initView();
     } else {
       // 非开发模式走拆包流程
-      ReactInstanceManager manager = mReactNativeHost.getReactInstanceManager();
-      final Activity currActivity = this;
       if (!manager.hasStartedCreatingInitialContext() || RNBundleLoader.getCatalystInstance(mReactNativeHost) == null) {
         if (manager.hasStartedCreatingInitialContext()) {
           mReactNativeHost.getReactInstanceManager().destroy();

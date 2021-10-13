@@ -69,9 +69,10 @@ public class MultiBundle implements ReactPackage {
   public static void setReactNativeHostHolder(ReactNativeHostHolder reactNativeHostHolder) {
     if (reactNativeHostHolder == null) return;;
     mReactNativeHostHolder = reactNativeHostHolder;
-    if (mReactNativeHostHolder.createReactContextInBackground() &&  reactNativeHostHolder.getReactNativeHost() != null) {
+    if (mReactNativeHostHolder.createReactContextInBackground() && reactNativeHostHolder.getReactNativeHost() != null) {
       ReactInstanceManager reactInstanceManager = reactNativeHostHolder.getReactNativeHost().getReactInstanceManager();
-      if (!reactInstanceManager.hasStartedCreatingInitialContext()) {
+      Boolean isDev = reactNativeHostHolder.getReactNativeHost().getUseDeveloperSupport();
+      if (!isDev && !reactInstanceManager.hasStartedCreatingInitialContext()) {
         reactInstanceManager.createReactContextInBackground();
       }
     }

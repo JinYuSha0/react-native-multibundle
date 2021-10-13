@@ -1,5 +1,4 @@
 import React, {useEffect, useState, useCallback} from 'react';
-import useSubscribeNative from '@hooks/useSubscribeNative';
 import {View, Text, Button, Card} from 'react-native-ui-lib';
 import {
   StyleSheet,
@@ -8,9 +7,15 @@ import {
   RefreshControl,
 } from 'react-native';
 import {HomeRouteName, HomeScreenProps} from './types';
-import {EventName, ScreenHeight, ScreenWidth} from '@src/utils/constant';
-import {openComponent, getAllComponent, checkUpdate} from '@utils/rnBridge';
-import {Component} from '@src/types/bridge';
+import {ScreenHeight, ScreenWidth} from '@src/utils/constant';
+import {
+  openComponent,
+  getAllComponent,
+  checkUpdate,
+  onEvent,
+  EventName,
+  Component,
+} from 'multibundle';
 
 const Home: React.FC<HomeScreenProps<HomeRouteName.Home>> = props => {
   const [components, setComponents] = useState<Component[]>([]);
@@ -31,11 +36,12 @@ const Home: React.FC<HomeScreenProps<HomeRouteName.Home>> = props => {
   }, []);
   useEffect(() => {
     getData();
+    const remove = onEvent(EventName.CHECK_UPDATE_DOWNLOAD_NEWS_APPLY, () => {
+      getData();
+      ToastAndroid.show('更新成功', 3000);
+    });
+    return remove;
   }, []);
-  useSubscribeNative([EventName.CHECK_UPDATE_DOWNLOAD_NEWS_APPLY], () => {
-    getData();
-    ToastAndroid.show('更新成功', 3000);
-  });
   return (
     <ScrollView
       style={styles.container}
