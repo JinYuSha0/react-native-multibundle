@@ -6,6 +6,25 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		0659477D27180B9F0032989E /* MultiBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659477C27180B9F0032989E /* MultiBundle.swift */; };
+		0659478027180D2D0032989E /* StorageKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659477F27180D2D0032989E /* StorageKey.swift */; };
+		0659478227180D420032989E /* EventName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659478127180D420032989E /* EventName.swift */; };
+		0659478527180D650032989E /* SettingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659478427180D650032989E /* SettingModel.swift */; };
+		0659478727180D770032989E /* ComponentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659478627180D770032989E /* ComponentModel.swift */; };
+		0659478927180D940032989E /* CheckUpdateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659478827180D940032989E /* CheckUpdateModel.swift */; };
+		0659478B27180DAF0032989E /* BuzSettingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659478A27180DAF0032989E /* BuzSettingModel.swift */; };
+		0659478E27180DDD0032989E /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659478D27180DDD0032989E /* Math.swift */; };
+		0659479027180DEB0032989E /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659478F27180DEB0032989E /* Preferences.swift */; };
+		0659479227180E230032989E /* RNConvert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659479127180E230032989E /* RNConvert.swift */; };
+		0659479427180E400032989E /* UIApplicationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659479327180E400032989E /* UIApplicationUtils.swift */; };
+		0659479627180E5E0032989E /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659479527180E5E0032989E /* File.swift */; };
+		0659479927181C320032989E /* RNBundleLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659479827181C320032989E /* RNBundleLoader.swift */; };
+		0659479C27181C720032989E /* RNDBHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659479B27181C720032989E /* RNDBHelper.swift */; };
+		0659479E27181C940032989E /* RNController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659479D27181C940032989E /* RNController.swift */; };
+		065947A027181DAE0032989E /* MultiBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 0659479F27181DAE0032989E /* MultiBundle.m */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		58B511D91A9E6C8500147676 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -19,6 +38,23 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0659477B27180B9F0032989E /* MultiBundle-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MultiBundle-Bridging-Header.h"; sourceTree = "<group>"; };
+		0659477C27180B9F0032989E /* MultiBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiBundle.swift; sourceTree = "<group>"; };
+		0659477F27180D2D0032989E /* StorageKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageKey.swift; sourceTree = "<group>"; };
+		0659478127180D420032989E /* EventName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventName.swift; sourceTree = "<group>"; };
+		0659478427180D650032989E /* SettingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingModel.swift; sourceTree = "<group>"; };
+		0659478627180D770032989E /* ComponentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentModel.swift; sourceTree = "<group>"; };
+		0659478827180D940032989E /* CheckUpdateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckUpdateModel.swift; sourceTree = "<group>"; };
+		0659478A27180DAF0032989E /* BuzSettingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuzSettingModel.swift; sourceTree = "<group>"; };
+		0659478D27180DDD0032989E /* Math.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
+		0659478F27180DEB0032989E /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
+		0659479127180E230032989E /* RNConvert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNConvert.swift; sourceTree = "<group>"; };
+		0659479327180E400032989E /* UIApplicationUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationUtils.swift; sourceTree = "<group>"; };
+		0659479527180E5E0032989E /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		0659479827181C320032989E /* RNBundleLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNBundleLoader.swift; sourceTree = "<group>"; };
+		0659479B27181C720032989E /* RNDBHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNDBHelper.swift; sourceTree = "<group>"; };
+		0659479D27181C940032989E /* RNController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNController.swift; sourceTree = "<group>"; };
+		0659479F27181DAE0032989E /* MultiBundle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MultiBundle.m; sourceTree = "<group>"; };
 		134814201AA4EA6300B7C361 /* libMultiBundle.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMultiBundle.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -33,6 +69,54 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0659477A27180B160032989E /* MultiBundle */ = {
+			isa = PBXGroup;
+			children = (
+				0659478C27180DC50032989E /* utils */,
+				0659478327180D570032989E /* models */,
+				0659477E27180D0C0032989E /* constants */,
+				0659477B27180B9F0032989E /* MultiBundle-Bridging-Header.h */,
+				0659479F27181DAE0032989E /* MultiBundle.m */,
+				0659477C27180B9F0032989E /* MultiBundle.swift */,
+				0659479D27181C940032989E /* RNController.swift */,
+				0659479B27181C720032989E /* RNDBHelper.swift */,
+				0659479827181C320032989E /* RNBundleLoader.swift */,
+			);
+			path = MultiBundle;
+			sourceTree = "<group>";
+		};
+		0659477E27180D0C0032989E /* constants */ = {
+			isa = PBXGroup;
+			children = (
+				0659477F27180D2D0032989E /* StorageKey.swift */,
+				0659478127180D420032989E /* EventName.swift */,
+			);
+			path = constants;
+			sourceTree = "<group>";
+		};
+		0659478327180D570032989E /* models */ = {
+			isa = PBXGroup;
+			children = (
+				0659478427180D650032989E /* SettingModel.swift */,
+				0659478627180D770032989E /* ComponentModel.swift */,
+				0659478827180D940032989E /* CheckUpdateModel.swift */,
+				0659478A27180DAF0032989E /* BuzSettingModel.swift */,
+			);
+			path = models;
+			sourceTree = "<group>";
+		};
+		0659478C27180DC50032989E /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				0659478D27180DDD0032989E /* Math.swift */,
+				0659478F27180DEB0032989E /* Preferences.swift */,
+				0659479127180E230032989E /* RNConvert.swift */,
+				0659479327180E400032989E /* UIApplicationUtils.swift */,
+				0659479527180E5E0032989E /* File.swift */,
+			);
+			path = utils;
+			sourceTree = "<group>";
+		};
 		134814211AA4EA7D00B7C361 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -44,6 +128,7 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
+				0659477A27180B160032989E /* MultiBundle */,
 				134814211AA4EA7D00B7C361 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -79,6 +164,7 @@
 				TargetAttributes = {
 					58B511DA1A9E6C8500147676 = {
 						CreatedOnToolsVersion = 6.1.1;
+						LastSwiftMigration = 1250;
 					};
 				};
 			};
@@ -105,6 +191,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0659479927181C320032989E /* RNBundleLoader.swift in Sources */,
+				0659478527180D650032989E /* SettingModel.swift in Sources */,
+				0659479627180E5E0032989E /* File.swift in Sources */,
+				0659478227180D420032989E /* EventName.swift in Sources */,
+				0659478B27180DAF0032989E /* BuzSettingModel.swift in Sources */,
+				0659479E27181C940032989E /* RNController.swift in Sources */,
+				0659479227180E230032989E /* RNConvert.swift in Sources */,
+				0659477D27180B9F0032989E /* MultiBundle.swift in Sources */,
+				0659479C27181C720032989E /* RNDBHelper.swift in Sources */,
+				0659478927180D940032989E /* CheckUpdateModel.swift in Sources */,
+				0659478027180D2D0032989E /* StorageKey.swift in Sources */,
+				0659478727180D770032989E /* ComponentModel.swift in Sources */,
+				0659479427180E400032989E /* UIApplicationUtils.swift in Sources */,
+				065947A027181DAE0032989E /* MultiBundle.m in Sources */,
+				0659478E27180DDD0032989E /* Math.swift in Sources */,
+				0659479027180DEB0032989E /* Preferences.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -157,7 +259,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "/usr/lib/swift $(inherited)";
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
@@ -209,7 +311,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "/usr/lib/swift $(inherited)";
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
@@ -225,32 +327,41 @@
 		58B511F01A9E6C8500147676 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../../../React/**",
 					"$(SRCROOT)/../../react-native/React/**",
 				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = MultiBundle;
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "MultiBundle/MultiBundle-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
 		58B511F11A9E6C8500147676 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../../../React/**",
 					"$(SRCROOT)/../../react-native/React/**",
 				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = MultiBundle;
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "MultiBundle/MultiBundle-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};

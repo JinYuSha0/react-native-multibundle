@@ -36,6 +36,8 @@ static void InitializeFlipper(UIApplication *application) {
                                                    moduleName:@"MultiBundleExample"
                                             initialProperties:nil];
 
+  
+  
   if (@available(iOS 13.0, *)) {
       rootView.backgroundColor = [UIColor systemBackgroundColor];
   } else {

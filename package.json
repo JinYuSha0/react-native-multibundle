@@ -3,6 +3,7 @@
   "title": "react-native-multibundle",
   "version": "0.0.1",
   "description": "multibundle",
+  "homepage": "https://github.com/JinYuSha0/react-native-multibundle",
   "main": "lib/index.js",
   "files": [
     "/android",

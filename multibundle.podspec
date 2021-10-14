@@ -1,5 +1,3 @@
-# multibundle.podspec
-
 require "json"
 
 package = JSON.parse(File.read(File.join(__dir__, "package.json")))
@@ -8,23 +6,19 @@ Pod::Spec.new do |s|
   s.name         = "multibundle"
   s.version      = package["version"]
   s.summary      = package["description"]
-  s.description  = <<-DESC
-                  multibundle
-                   DESC
-  s.homepage     = "https://github.com/JinYuSha0/react-native-multibundle"
-  # brief license entry:
-  s.license      = "MIT"
-  # optional - use expanded license entry instead:
-  # s.license    = { :type => "MIT", :file => "LICENSE" }
-  s.authors      = { "Soul" => "a1009943858@email.com" }
+  s.author       = package['author']
+  s.license      = package['license']
+  s.homepage     = package['homepage']
+  s.source       = { :git => "git@github.com:JinYuSha0/react-native-multibundle.git", :tag => "#{s.version}" }
   s.platforms    = { :ios => "9.0" }
-  s.source       = { :git => "https://github.com/JinYuSha0/react-native-multibundle", :tag => "#{s.version}" }
-
-  s.source_files = "ios/**/*.{h,c,cc,cpp,m,mm,swift}"
-  s.requires_arc = true
+  s.preserve_paths = '*.js'
+  s.library        = 'z'
+  s.source_files = "ios/MultiBundle/**/*.{h,c,cc,cpp,m,mm,swift}"
+  # s.public_header_files = ['ios/MultiBundle/MultiBundle.h']
 
   s.dependency "React"
-  # ...
-  # s.dependency "..."
+  s.dependency 'Alamofire', '~> 5.4'
+  s.dependency 'SSZipArchive'
+  s.dependency 'SQLite.swift', '~> 0.13.0'
 end
 
