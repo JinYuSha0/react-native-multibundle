@@ -11,18 +11,20 @@ import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactInstanceManagerBuilder;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
+import com.facebook.react.bridge.JSIModulePackage;
 import com.facebook.react.bridge.ReactMarker;
 import com.facebook.react.bridge.ReactMarkerConstants;
 import com.facebook.react.common.LifecycleState;
 import com.facebook.react.PackageList;
 import com.soul.rn.multibundle.MultiBundle;
 import com.soul.rn.multibundle.iface.ReactNativeHostHolder;
+import com.swmansion.reanimated.ReanimatedJSIModulePackage;
 
 import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
     public static ReactNativeHost mReactNativeHost;
-    public static final Boolean isDebug = false;
+    public static final Boolean isDebug = true;
 
     public static final ReactNativeHost getReactNativeHost(Boolean isDebug, Application application, @Nullable Activity activity) {
         if (mReactNativeHost == null) {
@@ -52,6 +54,12 @@ public class MainApplication extends Application implements ReactApplication {
                 @Override
                 protected String getJSMainModuleName() {
                     return "index";
+                }
+
+                @Nullable
+                @Override
+                protected JSIModulePackage getJSIModulePackage() {
+                    return new ReanimatedJSIModulePackage();
                 }
 
                 @Override

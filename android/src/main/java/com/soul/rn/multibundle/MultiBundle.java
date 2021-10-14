@@ -66,13 +66,17 @@ public class MultiBundle implements ReactPackage {
     initDB(mContext);
   }
 
+  private static Boolean isDev() {
+    if (mReactNativeHostHolder == null) return true;
+    return mReactNativeHostHolder.getReactNativeHost().getUseDeveloperSupport();
+  }
+
   public static void setReactNativeHostHolder(ReactNativeHostHolder reactNativeHostHolder) {
     if (reactNativeHostHolder == null) return;;
     mReactNativeHostHolder = reactNativeHostHolder;
     if (mReactNativeHostHolder.createReactContextInBackground() && reactNativeHostHolder.getReactNativeHost() != null) {
       ReactInstanceManager reactInstanceManager = reactNativeHostHolder.getReactNativeHost().getReactInstanceManager();
-      Boolean isDev = reactNativeHostHolder.getReactNativeHost().getUseDeveloperSupport();
-      if (!isDev && !reactInstanceManager.hasStartedCreatingInitialContext()) {
+      if (!isDev() && !reactInstanceManager.hasStartedCreatingInitialContext()) {
         reactInstanceManager.createReactContextInBackground();
       }
     }
@@ -125,6 +129,12 @@ public class MultiBundle implements ReactPackage {
       } catch (Exception exception) {
         exception.printStackTrace();
       }
+    }
+  }
+
+  public static void checkUpdate() {
+    if (mContext != null) {
+      checkUpdate(mContext, null);
     }
   }
 
@@ -233,7 +243,7 @@ public class MultiBundle implements ReactPackage {
         ));
         sendEventInner(EventName.CHECK_UPDATE_DOWNLOAD_NEWS_APPLY,componentSetting.componentName);
         // 立即应用新模块
-        if (!RNActivity.isExistsModule(componentSetting.componentName)) {
+        if (!isDev() && !RNActivity.isExistsModule(componentSetting.componentName)) {
           RNBundleLoader.loadScriptFromFile(ctx,RNBundleLoader.getCatalystInstance(mReactNativeHostHolder.getReactNativeHost()),bundleFilePath,false);
         }
       }
