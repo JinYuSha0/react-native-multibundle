@@ -3,7 +3,7 @@ import {NavigationContainer, DarkTheme} from '@react-navigation/native';
 import {AppProvider, ScreenProps} from '../app.context';
 import {CommonScreenProps} from '@navigators/index';
 import {isNil} from '@src/utils/utils';
-import {StatusBarMode, goBack} from 'multibundle';
+import {StatusBarMode, goBack} from 'react-native-multibundle';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {StatusBarHeight} from '../utils/constant';
 import BackSVG from '@assets/images/back.svg';

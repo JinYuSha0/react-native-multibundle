@@ -15,7 +15,7 @@ import {
   onEvent,
   EventName,
   Component,
-} from 'multibundle';
+} from 'react-native-multibundle';
 
 const Home: React.FC<HomeScreenProps<HomeRouteName.Home>> = props => {
   const [components, setComponents] = useState<Component[]>([]);

@@ -1,15 +1,17 @@
 {
-  "name": "multibundle",
-  "title": "Multibundle",
+  "name": "react-native-multibundle",
+  "title": "react-native-multibundle",
   "version": "0.0.1",
   "description": "multibundle",
   "main": "lib/index.js",
   "files": [
-    "README.md",
-    "android",
-    "index.js",
-    "ios",
-    "multibundle.podspec"
+    "/android",
+    "/ios",
+    "/lib",
+    "/src",
+    "multibundle.podspec",
+    "react-native.config.js",
+    "README.md"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
