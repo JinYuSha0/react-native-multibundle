@@ -1,6 +1,6 @@
 //
 //  BuzSettingModel.swift
-//  MultiBundle
+//  myRN
 //
 //  Created by Soul on 2021/10/9.
 //

@@ -1,9 +1,11 @@
 //
 //  RNConvert.swift
-//  MultiBundle
+//  myRN
 //
 //  Created by Soul on 2021/9/30.
 //
+
+import Foundation
 
 class RNConvert: NSObject {
   

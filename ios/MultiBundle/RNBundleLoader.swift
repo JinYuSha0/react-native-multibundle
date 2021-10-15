@@ -1,8 +1,8 @@
 //
 //  RNBundleLoader.swift
-//  MultiBundle
+//  myRN
 //
-//  Created by Soul on 2021/10/3.
+//  Created by 邵瑾瑜 on 2021/10/3.
 //
 
 import React
@@ -19,6 +19,9 @@ class RNBundleLoader: NSObject {
   static func getBridge() -> RCTBridge {
     return rctBridge!
   }
+  
+  typealias executeSourceCodeMethod = @convention(c)
+    (Data, Bool) -> Void
   
   static func executeSourceCode(_ bundleData: Data, sync: Bool) {
     let selector = NSSelectorFromString("executeSourceCode:sync:")
@@ -52,7 +55,7 @@ class RNBundleLoader: NSObject {
   }
   
   static func load(_ BundleName: String) {
-    if !MultiBundle.IS_INIT || MultiBundle.IS_DEV { return }
+    if MultiBundle.IS_DEV { return }
     var filePath = BundleName
     let startIndex = filePath.startIndex
     if BundleName.starts(with: "assets://") {

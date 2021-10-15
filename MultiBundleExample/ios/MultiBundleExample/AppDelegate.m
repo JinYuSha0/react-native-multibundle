@@ -11,6 +11,10 @@
 #import <FlipperKitNetworkPlugin/FlipperKitNetworkPlugin.h>
 #import <SKIOSNetworkPlugin/SKIOSNetworkAdapter.h>
 #import <FlipperKitReactPlugin/FlipperKitReactPlugin.h>
+#import "MultiBundleExample-Bridging-Header.h"
+
+@import React;
+@import MultiBundle;
 
 static void InitializeFlipper(UIApplication *application) {
   FlipperClient *client = [FlipperClient sharedClient];
@@ -33,11 +37,11 @@ static void InitializeFlipper(UIApplication *application) {
 
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
-                                                   moduleName:@"MultiBundleExample"
+                                                   moduleName:@"Home"
                                             initialProperties:nil];
+  
+  [MultiBundle setupWithRctBridge:bridge isDev:false checkUpdateServer:@"http://192.168.1.1:3000"];
 
-  
-  
   if (@available(iOS 13.0, *)) {
       rootView.backgroundColor = [UIColor systemBackgroundColor];
   } else {

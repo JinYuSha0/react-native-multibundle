@@ -3,30 +3,30 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0659477D27180B9F0032989E /* MultiBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659477C27180B9F0032989E /* MultiBundle.swift */; };
-		0659478027180D2D0032989E /* StorageKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659477F27180D2D0032989E /* StorageKey.swift */; };
-		0659478227180D420032989E /* EventName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659478127180D420032989E /* EventName.swift */; };
-		0659478527180D650032989E /* SettingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659478427180D650032989E /* SettingModel.swift */; };
-		0659478727180D770032989E /* ComponentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659478627180D770032989E /* ComponentModel.swift */; };
-		0659478927180D940032989E /* CheckUpdateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659478827180D940032989E /* CheckUpdateModel.swift */; };
-		0659478B27180DAF0032989E /* BuzSettingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659478A27180DAF0032989E /* BuzSettingModel.swift */; };
-		0659478E27180DDD0032989E /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659478D27180DDD0032989E /* Math.swift */; };
-		0659479027180DEB0032989E /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659478F27180DEB0032989E /* Preferences.swift */; };
-		0659479227180E230032989E /* RNConvert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659479127180E230032989E /* RNConvert.swift */; };
-		0659479427180E400032989E /* UIApplicationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659479327180E400032989E /* UIApplicationUtils.swift */; };
-		0659479627180E5E0032989E /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659479527180E5E0032989E /* File.swift */; };
-		0659479927181C320032989E /* RNBundleLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659479827181C320032989E /* RNBundleLoader.swift */; };
-		0659479C27181C720032989E /* RNDBHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659479B27181C720032989E /* RNDBHelper.swift */; };
-		0659479E27181C940032989E /* RNController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659479D27181C940032989E /* RNController.swift */; };
-		065947A027181DAE0032989E /* MultiBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 0659479F27181DAE0032989E /* MultiBundle.m */; };
+		0659485127195CA30032989E /* MultiBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659485027195CA30032989E /* MultiBundle.swift */; };
+		0659485427197EA10032989E /* StorageKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659485327197EA10032989E /* StorageKey.swift */; };
+		0659485627197EBA0032989E /* EventName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659485527197EBA0032989E /* EventName.swift */; };
+		0659485927197EE40032989E /* SettingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659485827197EE40032989E /* SettingModel.swift */; };
+		0659485B27197EEF0032989E /* ComponentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659485A27197EEF0032989E /* ComponentModel.swift */; };
+		0659485D27197EFC0032989E /* CheckUpdateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659485C27197EFC0032989E /* CheckUpdateModel.swift */; };
+		0659485F27197F090032989E /* BuzSettingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659485E27197F090032989E /* BuzSettingModel.swift */; };
+		0659486227197F460032989E /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659486127197F460032989E /* Math.swift */; };
+		0659486427197F530032989E /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659486327197F530032989E /* Preferences.swift */; };
+		0659486627197F5D0032989E /* RNConvert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659486527197F5D0032989E /* RNConvert.swift */; };
+		0659486827197F690032989E /* UIApplicationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659486727197F690032989E /* UIApplicationUtils.swift */; };
+		0659486A27197F720032989E /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659486927197F720032989E /* File.swift */; };
+		0659486C271980400032989E /* RNController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659486B271980400032989E /* RNController.swift */; };
+		0659486E271980540032989E /* RNDBHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659486D271980540032989E /* RNDBHelper.swift */; };
+		06594870271980710032989E /* RNBundleLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0659486F271980710032989E /* RNBundleLoader.swift */; };
+		06594872271980DB0032989E /* MultiBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 06594871271980DB0032989E /* MultiBundle.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		58B511D91A9E6C8500147676 /* CopyFiles */ = {
+		0659484127195A3F0032989E /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "include/$(PRODUCT_NAME)";
@@ -38,28 +38,28 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0659477B27180B9F0032989E /* MultiBundle-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MultiBundle-Bridging-Header.h"; sourceTree = "<group>"; };
-		0659477C27180B9F0032989E /* MultiBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiBundle.swift; sourceTree = "<group>"; };
-		0659477F27180D2D0032989E /* StorageKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageKey.swift; sourceTree = "<group>"; };
-		0659478127180D420032989E /* EventName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventName.swift; sourceTree = "<group>"; };
-		0659478427180D650032989E /* SettingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingModel.swift; sourceTree = "<group>"; };
-		0659478627180D770032989E /* ComponentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentModel.swift; sourceTree = "<group>"; };
-		0659478827180D940032989E /* CheckUpdateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckUpdateModel.swift; sourceTree = "<group>"; };
-		0659478A27180DAF0032989E /* BuzSettingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuzSettingModel.swift; sourceTree = "<group>"; };
-		0659478D27180DDD0032989E /* Math.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
-		0659478F27180DEB0032989E /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
-		0659479127180E230032989E /* RNConvert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNConvert.swift; sourceTree = "<group>"; };
-		0659479327180E400032989E /* UIApplicationUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationUtils.swift; sourceTree = "<group>"; };
-		0659479527180E5E0032989E /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
-		0659479827181C320032989E /* RNBundleLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNBundleLoader.swift; sourceTree = "<group>"; };
-		0659479B27181C720032989E /* RNDBHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNDBHelper.swift; sourceTree = "<group>"; };
-		0659479D27181C940032989E /* RNController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNController.swift; sourceTree = "<group>"; };
-		0659479F27181DAE0032989E /* MultiBundle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MultiBundle.m; sourceTree = "<group>"; };
-		134814201AA4EA6300B7C361 /* libMultiBundle.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMultiBundle.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		0659484327195A3F0032989E /* libMultiBundle.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMultiBundle.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		0659484F27195CA20032989E /* MultiBundle-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MultiBundle-Bridging-Header.h"; sourceTree = "<group>"; };
+		0659485027195CA30032989E /* MultiBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiBundle.swift; sourceTree = "<group>"; };
+		0659485327197EA10032989E /* StorageKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageKey.swift; sourceTree = "<group>"; };
+		0659485527197EBA0032989E /* EventName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventName.swift; sourceTree = "<group>"; };
+		0659485827197EE40032989E /* SettingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingModel.swift; sourceTree = "<group>"; };
+		0659485A27197EEF0032989E /* ComponentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentModel.swift; sourceTree = "<group>"; };
+		0659485C27197EFC0032989E /* CheckUpdateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckUpdateModel.swift; sourceTree = "<group>"; };
+		0659485E27197F090032989E /* BuzSettingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuzSettingModel.swift; sourceTree = "<group>"; };
+		0659486127197F460032989E /* Math.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
+		0659486327197F530032989E /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
+		0659486527197F5D0032989E /* RNConvert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNConvert.swift; sourceTree = "<group>"; };
+		0659486727197F690032989E /* UIApplicationUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationUtils.swift; sourceTree = "<group>"; };
+		0659486927197F720032989E /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		0659486B271980400032989E /* RNController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNController.swift; sourceTree = "<group>"; };
+		0659486D271980540032989E /* RNDBHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNDBHelper.swift; sourceTree = "<group>"; };
+		0659486F271980710032989E /* RNBundleLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNBundleLoader.swift; sourceTree = "<group>"; };
+		06594871271980DB0032989E /* MultiBundle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MultiBundle.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		58B511D81A9E6C8500147676 /* Frameworks */ = {
+		0659484027195A3F0032989E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -69,165 +69,167 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0659477A27180B160032989E /* MultiBundle */ = {
+		0659483A27195A3F0032989E = {
 			isa = PBXGroup;
 			children = (
-				0659478C27180DC50032989E /* utils */,
-				0659478327180D570032989E /* models */,
-				0659477E27180D0C0032989E /* constants */,
-				0659477B27180B9F0032989E /* MultiBundle-Bridging-Header.h */,
-				0659479F27181DAE0032989E /* MultiBundle.m */,
-				0659477C27180B9F0032989E /* MultiBundle.swift */,
-				0659479D27181C940032989E /* RNController.swift */,
-				0659479B27181C720032989E /* RNDBHelper.swift */,
-				0659479827181C320032989E /* RNBundleLoader.swift */,
+				0659484527195A3F0032989E /* MultiBundle */,
+				0659484427195A3F0032989E /* Products */,
 			);
-			path = MultiBundle;
 			sourceTree = "<group>";
 		};
-		0659477E27180D0C0032989E /* constants */ = {
+		0659484427195A3F0032989E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				0659477F27180D2D0032989E /* StorageKey.swift */,
-				0659478127180D420032989E /* EventName.swift */,
-			);
-			path = constants;
-			sourceTree = "<group>";
-		};
-		0659478327180D570032989E /* models */ = {
-			isa = PBXGroup;
-			children = (
-				0659478427180D650032989E /* SettingModel.swift */,
-				0659478627180D770032989E /* ComponentModel.swift */,
-				0659478827180D940032989E /* CheckUpdateModel.swift */,
-				0659478A27180DAF0032989E /* BuzSettingModel.swift */,
-			);
-			path = models;
-			sourceTree = "<group>";
-		};
-		0659478C27180DC50032989E /* utils */ = {
-			isa = PBXGroup;
-			children = (
-				0659478D27180DDD0032989E /* Math.swift */,
-				0659478F27180DEB0032989E /* Preferences.swift */,
-				0659479127180E230032989E /* RNConvert.swift */,
-				0659479327180E400032989E /* UIApplicationUtils.swift */,
-				0659479527180E5E0032989E /* File.swift */,
-			);
-			path = utils;
-			sourceTree = "<group>";
-		};
-		134814211AA4EA7D00B7C361 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				134814201AA4EA6300B7C361 /* libMultiBundle.a */,
+				0659484327195A3F0032989E /* libMultiBundle.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		58B511D21A9E6C8500147676 = {
+		0659484527195A3F0032989E /* MultiBundle */ = {
 			isa = PBXGroup;
 			children = (
-				0659477A27180B160032989E /* MultiBundle */,
-				134814211AA4EA7D00B7C361 /* Products */,
+				0659485727197ED70032989E /* models */,
+				0659485227197E820032989E /* constants */,
+				0659486027197F270032989E /* utils */,
+				0659484F27195CA20032989E /* MultiBundle-Bridging-Header.h */,
+				06594871271980DB0032989E /* MultiBundle.m */,
+				0659485027195CA30032989E /* MultiBundle.swift */,
+				0659486B271980400032989E /* RNController.swift */,
+				0659486D271980540032989E /* RNDBHelper.swift */,
+				0659486F271980710032989E /* RNBundleLoader.swift */,
 			);
+			path = MultiBundle;
+			sourceTree = "<group>";
+		};
+		0659485227197E820032989E /* constants */ = {
+			isa = PBXGroup;
+			children = (
+				0659485327197EA10032989E /* StorageKey.swift */,
+				0659485527197EBA0032989E /* EventName.swift */,
+			);
+			path = constants;
+			sourceTree = "<group>";
+		};
+		0659485727197ED70032989E /* models */ = {
+			isa = PBXGroup;
+			children = (
+				0659485827197EE40032989E /* SettingModel.swift */,
+				0659485A27197EEF0032989E /* ComponentModel.swift */,
+				0659485C27197EFC0032989E /* CheckUpdateModel.swift */,
+				0659485E27197F090032989E /* BuzSettingModel.swift */,
+			);
+			path = models;
+			sourceTree = "<group>";
+		};
+		0659486027197F270032989E /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				0659486127197F460032989E /* Math.swift */,
+				0659486327197F530032989E /* Preferences.swift */,
+				0659486527197F5D0032989E /* RNConvert.swift */,
+				0659486727197F690032989E /* UIApplicationUtils.swift */,
+				0659486927197F720032989E /* File.swift */,
+			);
+			path = utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		58B511DA1A9E6C8500147676 /* MultiBundle */ = {
+		0659484227195A3F0032989E /* MultiBundle */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 58B511EF1A9E6C8500147676 /* Build configuration list for PBXNativeTarget "MultiBundle" */;
+			buildConfigurationList = 0659484C27195A3F0032989E /* Build configuration list for PBXNativeTarget "MultiBundle" */;
 			buildPhases = (
-				58B511D71A9E6C8500147676 /* Sources */,
-				58B511D81A9E6C8500147676 /* Frameworks */,
-				58B511D91A9E6C8500147676 /* CopyFiles */,
+				0659483F27195A3F0032989E /* Sources */,
+				0659484027195A3F0032989E /* Frameworks */,
+				0659484127195A3F0032989E /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = MultiBundle;
-			productName = RCTDataManager;
-			productReference = 134814201AA4EA6300B7C361 /* libMultiBundle.a */;
+			productName = MultiBundle;
+			productReference = 0659484327195A3F0032989E /* libMultiBundle.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		58B511D31A9E6C8500147676 /* Project object */ = {
+		0659483B27195A3F0032989E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0920;
-				ORGANIZATIONNAME = Facebook;
+				LastUpgradeCheck = 1250;
 				TargetAttributes = {
-					58B511DA1A9E6C8500147676 = {
-						CreatedOnToolsVersion = 6.1.1;
+					0659484227195A3F0032989E = {
+						CreatedOnToolsVersion = 12.5;
 						LastSwiftMigration = 1250;
 					};
 				};
 			};
-			buildConfigurationList = 58B511D61A9E6C8500147676 /* Build configuration list for PBXProject "MultiBundle" */;
-			compatibilityVersion = "Xcode 3.2";
+			buildConfigurationList = 0659483E27195A3F0032989E /* Build configuration list for PBXProject "MultiBundle" */;
+			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
 			);
-			mainGroup = 58B511D21A9E6C8500147676;
-			productRefGroup = 58B511D21A9E6C8500147676;
+			mainGroup = 0659483A27195A3F0032989E;
+			productRefGroup = 0659484427195A3F0032989E /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				58B511DA1A9E6C8500147676 /* MultiBundle */,
+				0659484227195A3F0032989E /* MultiBundle */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		58B511D71A9E6C8500147676 /* Sources */ = {
+		0659483F27195A3F0032989E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0659479927181C320032989E /* RNBundleLoader.swift in Sources */,
-				0659478527180D650032989E /* SettingModel.swift in Sources */,
-				0659479627180E5E0032989E /* File.swift in Sources */,
-				0659478227180D420032989E /* EventName.swift in Sources */,
-				0659478B27180DAF0032989E /* BuzSettingModel.swift in Sources */,
-				0659479E27181C940032989E /* RNController.swift in Sources */,
-				0659479227180E230032989E /* RNConvert.swift in Sources */,
-				0659477D27180B9F0032989E /* MultiBundle.swift in Sources */,
-				0659479C27181C720032989E /* RNDBHelper.swift in Sources */,
-				0659478927180D940032989E /* CheckUpdateModel.swift in Sources */,
-				0659478027180D2D0032989E /* StorageKey.swift in Sources */,
-				0659478727180D770032989E /* ComponentModel.swift in Sources */,
-				0659479427180E400032989E /* UIApplicationUtils.swift in Sources */,
-				065947A027181DAE0032989E /* MultiBundle.m in Sources */,
-				0659478E27180DDD0032989E /* Math.swift in Sources */,
-				0659479027180DEB0032989E /* Preferences.swift in Sources */,
+				0659485927197EE40032989E /* SettingModel.swift in Sources */,
+				0659486A27197F720032989E /* File.swift in Sources */,
+				0659486C271980400032989E /* RNController.swift in Sources */,
+				0659485627197EBA0032989E /* EventName.swift in Sources */,
+				0659485F27197F090032989E /* BuzSettingModel.swift in Sources */,
+				0659486627197F5D0032989E /* RNConvert.swift in Sources */,
+				0659485127195CA30032989E /* MultiBundle.swift in Sources */,
+				0659486E271980540032989E /* RNDBHelper.swift in Sources */,
+				06594870271980710032989E /* RNBundleLoader.swift in Sources */,
+				0659485D27197EFC0032989E /* CheckUpdateModel.swift in Sources */,
+				0659485427197EA10032989E /* StorageKey.swift in Sources */,
+				0659485B27197EEF0032989E /* ComponentModel.swift in Sources */,
+				0659486827197F690032989E /* UIApplicationUtils.swift in Sources */,
+				06594872271980DB0032989E /* MultiBundle.m in Sources */,
+				0659486227197F460032989E /* Math.swift in Sources */,
+				0659486427197F530032989E /* Preferences.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		58B511ED1A9E6C8500147676 /* Debug */ = {
+		0659484A27195A3F0032989E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
@@ -236,15 +238,18 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -252,41 +257,38 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "/usr/lib/swift $(inherited)";
-				LIBRARY_SEARCH_PATHS = (
-					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
-					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
-					"\"$(inherited)\"",
-				);
-				MTL_ENABLE_DEBUG_INFO = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
-		58B511EE1A9E6C8500147676 /* Release */ = {
+		0659484B27195A3F0032989E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
@@ -295,15 +297,18 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -311,82 +316,77 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "/usr/lib/swift $(inherited)";
-				LIBRARY_SEARCH_PATHS = (
-					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
-					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
-					"\"$(inherited)\"",
-				);
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
-		58B511F01A9E6C8500147676 /* Debug */ = {
+		0659484D27195A3F0032989E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				HEADER_SEARCH_PATHS = (
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(SRCROOT)/../../../React/**",
-					"$(SRCROOT)/../../react-native/React/**",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
 				);
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = MultiBundle;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "MultiBundle/MultiBundle-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		58B511F11A9E6C8500147676 /* Release */ = {
+		0659484E27195A3F0032989E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				HEADER_SEARCH_PATHS = (
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(SRCROOT)/../../../React/**",
-					"$(SRCROOT)/../../react-native/React/**",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
 				);
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = MultiBundle;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "MultiBundle/MultiBundle-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		58B511D61A9E6C8500147676 /* Build configuration list for PBXProject "MultiBundle" */ = {
+		0659483E27195A3F0032989E /* Build configuration list for PBXProject "MultiBundle" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				58B511ED1A9E6C8500147676 /* Debug */,
-				58B511EE1A9E6C8500147676 /* Release */,
+				0659484A27195A3F0032989E /* Debug */,
+				0659484B27195A3F0032989E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		58B511EF1A9E6C8500147676 /* Build configuration list for PBXNativeTarget "MultiBundle" */ = {
+		0659484C27195A3F0032989E /* Build configuration list for PBXNativeTarget "MultiBundle" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				58B511F01A9E6C8500147676 /* Debug */,
-				58B511F11A9E6C8500147676 /* Release */,
+				0659484D27195A3F0032989E /* Debug */,
+				0659484E27195A3F0032989E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 58B511D31A9E6C8500147676 /* Project object */;
+	rootObject = 0659483B27195A3F0032989E /* Project object */;
 }

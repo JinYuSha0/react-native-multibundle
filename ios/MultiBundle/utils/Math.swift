@@ -1,9 +1,11 @@
 //
 //  Math.swift
-//  MultiBundle
+//  myRN
 //
 //  Created by Soul on 2021/9/29.
 //
+
+import Foundation
 
 class Math: NSObject {
   

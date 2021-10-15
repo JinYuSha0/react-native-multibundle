@@ -1,9 +1,11 @@
 //
 //  Preferences.swift
-//  MultiBundle
+//  myRN
 //
 //  Created by Soul on 2021/9/29.
 //
+
+import UIKit
 
 class Preferences: NSObject {
   private static let userDefault = UserDefaults.standard

@@ -1,9 +1,11 @@
 //
 //  EventName.swift
-//  MultiBundle
+//  myRN
 //
 //  Created by Soul on 2021/10/9.
 //
+
+import Foundation
 
 class EventName : NSObject {
   

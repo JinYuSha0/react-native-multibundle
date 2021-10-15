@@ -1,9 +1,11 @@
 //
 //  UIApplicationUtils.swift
-//  MultiBundle
+//  myRN
 //
-//  Created by Soul on 2021/10/3.
+//  Created by 邵瑾瑜 on 2021/10/3.
 //
+
+import UIKit
 
 extension UIApplication {
     
