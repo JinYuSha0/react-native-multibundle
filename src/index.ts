@@ -89,6 +89,7 @@ export function onEvent(
   if (!EventEmitter) {
     EventEmitter = new NativeEventEmitter(NativeModules.MultiBundle);
   }
+  registerEvent(NativeConstants.prefix + eventName);
   const observer = EventEmitter.addListener(
     NativeConstants.prefix + eventName,
     listener

@@ -8,6 +8,7 @@
 import React
 import Alamofire
 import SSZipArchive
+import UIKit
 
 @objc(MultiBundle)
 public class MultiBundle: RCTEventEmitter {
@@ -17,18 +18,66 @@ public class MultiBundle: RCTEventEmitter {
   private static var registeredSupportEvents = [String]()
   
   public static var IS_DEV: Bool = false
+  public static var DEFAULT_COMPONENT = ""
   public static var CHECK_UPDATE_HOST = ""
   
   override init() {
     super.init()
     MultiBundle.eventEmitter = self
-    initDB()
   }
   
-  @objc public static func initial (rctBridge: RCTBridge, isDev: Bool, checkUpdateServer: String) {
-    RNBundleLoader.setBridge(rctBridge)
+  @objc public static func setup (
+    isDev: Bool,
+    defaultComponent: String,
+    checkUpdateServer: String,
+    launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil,
+    onComplete: @escaping ((_ bridge: RCTBridge, _ rootView: RCTRootView) -> Void)
+  ) {
     IS_DEV = isDev
+    DEFAULT_COMPONENT = defaultComponent
     CHECK_UPDATE_HOST = checkUpdateServer
+    
+    initDB()
+    
+    var commonBundleUrl: URL
+    if isDev {
+      commonBundleUrl = RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "index", fallbackResource: nil)
+    } else {
+      commonBundleUrl = Bundle.main.url(forResource: "bundle/common.ios", withExtension: "bundle")!
+    }
+    
+    let rctBridge = RCTBridge.init(bundleURL: commonBundleUrl, moduleProvider: nil, launchOptions: launchOptions)
+    
+    RNBundleLoader.setBridge(rctBridge!)
+    
+    
+    if !isDev {
+      var observer: NSObjectProtocol?
+      observer = NotificationCenter.default.addObserver(forName: NSNotification.Name("RCTJavaScriptDidLoadNotification"), object: nil, queue: OperationQueue.main) {_ in
+        initView(bridge: rctBridge!, onComplete: onComplete)
+        NotificationCenter.default.removeObserver(observer!)
+      }
+    } else {
+      initView(bridge: rctBridge!, onComplete: onComplete)
+    }
+  }
+  
+  @objc private static func initView(bridge: RCTBridge, onComplete: @escaping ((_ bridge: RCTBridge, _ rootView: RCTRootView) -> Void)) {
+    if !MultiBundle.IS_DEV {
+      NotificationCenter.default.removeObserver(self)
+      let defaultComponent = RNDBHelper.manager.selectByComponentName(DEFAULT_COMPONENT)
+      RNBundleLoader.load(defaultComponent!.FilePath)
+    }
+    
+    let rootView = RCTRootView(bridge: bridge, moduleName: DEFAULT_COMPONENT, initialProperties: nil)
+
+    if #available(iOS 13.0, *) {
+      rootView.backgroundColor = UIColor.systemBackground
+    } else {
+      rootView.backgroundColor = UIColor.white
+    }
+    
+    onComplete(bridge, rootView)
   }
   
   @objc public static func checkUpdate() {
@@ -39,7 +88,7 @@ public class MultiBundle: RCTEventEmitter {
     MultiBundle.checkUpdate(onSuccess: onSuccess, onError: onError)
   }
   
-  func initDB() -> Void {
+  static func initDB() -> Void {
     let isInit: Bool = (Preferences.getValueByKey(key: StorageKey.INIT_DB) ?? false) as! Bool
     if (!isInit) {
       guard let path = Bundle.main.path(forResource: "bundle/appSetting", ofType: "json") else { return }

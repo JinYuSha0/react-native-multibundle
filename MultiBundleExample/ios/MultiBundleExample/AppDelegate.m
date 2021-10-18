@@ -34,25 +34,20 @@ static void InitializeFlipper(UIApplication *application) {
 #ifdef FB_SONARKIT_ENABLED
   InitializeFlipper(application);
 #endif
-
-  RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
-  RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
-                                                   moduleName:@"Home"
-                                            initialProperties:nil];
   
-  [MultiBundle setupWithRctBridge:bridge isDev:false checkUpdateServer:@"http://192.168.1.1:3000"];
+  void (^onComplete) (RCTBridge*, RCTRootView*) = ^(RCTBridge* bridge, RCTRootView* rootView)
+  {
+    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    UIViewController *rootViewController = [UIViewController new];
+    rootViewController.view = rootView;
+    UINavigationController *navigationController =  [[UINavigationController alloc] initWithRootViewController:rootViewController];
+    [navigationController setNavigationBarHidden:true animated:false];
+    self.window.rootViewController = navigationController;
+    [self.window makeKeyAndVisible];
+  };
+  
+  [MultiBundle setupWithIsDev:false defaultComponent:@"Home" checkUpdateServer:@"" launchOptions:launchOptions onComplete:onComplete];
 
-  if (@available(iOS 13.0, *)) {
-      rootView.backgroundColor = [UIColor systemBackgroundColor];
-  } else {
-      rootView.backgroundColor = [UIColor whiteColor];
-  }
-
-  self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-  UIViewController *rootViewController = [UIViewController new];
-  rootViewController.view = rootView;
-  self.window.rootViewController = rootViewController;
-  [self.window makeKeyAndVisible];
   return YES;
 }
 
