@@ -51,6 +51,10 @@ repositories {
     google()
     mavenCentral()
     jcenter()
+    maven {
+        url "https://mvnrepository.com/"
+    }
+    
 }
 
 dependencies {

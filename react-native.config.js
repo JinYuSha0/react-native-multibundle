@@ -3,7 +3,7 @@ module.exports = {
     platforms: {
       android: {
         packageInstance:
-          'new MultiBundle(getApplicationContext(), getResources().getString(R.string.MultiBundleDefailtModuleName), getResources().getString(R.string.MultiBundleServerHost))',
+          'new MultiBundle(getApplicationContext(), getResources().getString(R.string.MultiBundleDefaultModuleName), getResources().getString(R.string.MultiBundleServerHost))',
       },
     },
   },
