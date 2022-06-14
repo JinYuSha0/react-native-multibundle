@@ -58,7 +58,7 @@ function getScreenOptions(routeParams: Omit<ScreenProps, 'routeName'>) {
     options.headerStatusBarHeight = StatusBarHeight;
   }
   if (routeParams.goBack) {
-    CommonScreenProps.headerLeft = props => {
+    options.headerLeft = props => {
       return (
         <TouchableOpacity
           activeOpacity={0.7}
@@ -74,13 +74,14 @@ function getScreenOptions(routeParams: Omit<ScreenProps, 'routeName'>) {
 export const App: React.FC<ScreenProps> = props => {
   const { children, ...rest } = props;
   const { routeName = '', ...routeParams } = rest;
+  const screenOptions = useMemo(() => getScreenOptions(routeParams), []);
   return <AppProvider screenProps={rest}>
     <NavigationContainer theme={DarkTheme}>
       {
         React.cloneElement(children as React.ReactElement, {
           routeName,
           routeParams,
-          screenOptions: getScreenOptions(routeParams),
+          screenOptions
         })
       }
     </NavigationContainer>

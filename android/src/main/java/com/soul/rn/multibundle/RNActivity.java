@@ -1,5 +1,6 @@
 package com.soul.rn.multibundle;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.soul.rn.multibundle.constant.StatusBar;
@@ -31,5 +32,11 @@ public class RNActivity extends RNActivityImpl {
     params.putAll(extraParams);
     String moduleName = bundle.getString("moduleName", getDefaultComponentName());
     return new RNBundle(moduleName, params);
+  }
+
+  @Override
+  public void onNewIntent(Intent intent) {
+    super.onNewIntent(intent);
+    setIntent(intent);
   }
 }
