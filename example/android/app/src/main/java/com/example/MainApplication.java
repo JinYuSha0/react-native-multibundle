@@ -4,6 +4,10 @@ import android.app.Activity;
 import android.app.Application;
 
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.OnLifecycleEvent;
+import androidx.lifecycle.ProcessLifecycleOwner;
 
 import com.facebook.infer.annotation.Assertions;
 import com.facebook.react.PackageList;
@@ -20,7 +24,7 @@ import com.soul.rn.multibundle.iface.ReactNativeHostHolder;
 
 import java.util.List;
 
-public class MainApplication extends Application implements ReactApplication {
+public class MainApplication extends Application implements ReactApplication, LifecycleObserver {
     public static ReactNativeHost mReactNativeHost;
     public static final Boolean isDebug = false;
 
@@ -97,6 +101,7 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
         mReactNativeHost = getReactNativeHost();
         MultiBundle.setReactNativeHostHolder(new ReactNativeHostHolder() {
             @Override
@@ -109,5 +114,14 @@ public class MainApplication extends Application implements ReactApplication {
                 return true;
             }
         });
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    void onForeground() {
+        MultiBundle.checkUpdate();
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    void onBackground() {
     }
 }

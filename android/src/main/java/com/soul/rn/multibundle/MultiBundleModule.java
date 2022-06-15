@@ -3,6 +3,7 @@
 package com.soul.rn.multibundle;
 
 import android.app.Activity;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +18,8 @@ import com.facebook.react.bridge.WritableMap;
 import com.soul.rn.multibundle.iface.Callback;
 import com.soul.rn.multibundle.utils.RNConvert;
 
+import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -72,6 +75,48 @@ public class MultiBundleModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void goBack() {
         getCurrentActivity().finish();
+    }
+
+    @ReactMethod
+    public void log(String message) {
+        Log.i("MultiBundle", message);
+    }
+
+    @ReactMethod
+    public void travelDrawable(String bundlePath, Promise promise) {
+        this.log("SmartAssets: bundlePath ===> " + bundlePath);
+        WritableArray fileArray = Arguments.createArray();
+        File bundleFile = new File(bundlePath);
+        File bundleDir = bundleFile.getParentFile();
+        if(bundleDir.isDirectory()){
+            FileFilter filter = new FileFilter(){
+                @Override
+                public boolean accept(File file) {
+                    return file!=null&&file.getName().startsWith("drawable")&&file.isDirectory();
+                }
+            };
+            File[] drawableDirs = bundleDir.listFiles(filter);
+            if(drawableDirs!=null){
+                for(File dir : drawableDirs){
+                    String parentPath = dir.getAbsolutePath();
+                    String[] files = dir.list();
+                    for(String file:files){
+                        fileArray.pushString("file://" + parentPath+File.separator + file);
+                    }
+                }
+            }
+        }
+        promise.resolve(fileArray);
+    }
+
+    @ReactMethod(isBlockingSynchronousMethod = true)
+    public boolean isFileExist(String filePath){
+        this.log("SmartAssets filePath ====> " + filePath);
+        if(filePath==null){
+            return false;
+        }
+        File imageFile = new File(filePath.replace("file://",""));
+        return (imageFile.exists());
     }
 
     @Override

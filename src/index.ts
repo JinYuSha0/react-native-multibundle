@@ -1,8 +1,10 @@
+// @ts-ignore
+import AssetSourceResolver from "react-native/Libraries/Image/AssetSourceResolver";
 import { NativeModules, Platform, NativeEventEmitter } from 'react-native';
-import type { TNativeConstants } from './types/nativeConstants';
-import type { Component, CheckUpdateResult } from './types/muldiBundle';
 import { StatusBarMode } from './types/statusBarMode';
 import { EventName } from './types/eventName';
+import type { TNativeConstants } from './types/nativeConstants';
+import type { Component, CheckUpdateResult } from './types/muldiBundle';
 
 const IsIOS = Platform.OS === 'ios';
 
@@ -96,6 +98,54 @@ export function onEvent(
   );
   return observer.remove;
 }
+
+class SmartAssetsImpl {
+  private drawableFiles: string[] = [];
+  private _sourceCodeScriptURL?: string;
+
+  getSourceCodeScriptURL() {
+    if (this._sourceCodeScriptURL) {
+      return this._sourceCodeScriptURL;
+    }
+    // @ts-ignore
+    let sourceCode = global.nativeExtensions && global.nativeExtensions.SourceCode;
+    if (!sourceCode) {
+      sourceCode = NativeModules && NativeModules.SourceCode;
+    }
+    this._sourceCodeScriptURL = sourceCode.scriptURL;
+    return this._sourceCodeScriptURL;
+  }
+
+  async init() {
+    this.drawableFiles = await MultiBundle?.travelDrawable(this.getSourceCodeScriptURL());
+    AssetSourceResolver.prototype.defaultAsset = function () {
+      if (this.isLoadedFromServer()) {
+        return this.assetServerURL();
+      }
+
+      if (Platform.OS === 'android') {
+        if(this.isLoadedFromFileSystem()){
+					let resolvedAssetSource = this.drawableFolderInBundle();
+					let resPath = resolvedAssetSource.uri;
+					if(this.drawableFiles.includes(resPath)) {
+						return resolvedAssetSource;
+					}
+					let isFileExist =  MultiBundle?.isFileExist(resPath);
+					if (isFileExist === true) {
+						return resolvedAssetSource;
+					} else {
+						return this.resourceIdentifierWithoutScale();
+					}
+				} else {
+					return this.resourceIdentifierWithoutScale();
+				}
+      } else {
+        return this.scaledAssetURLNearBundle();
+      }
+    }
+  }
+}
+export const SmartAssets = new SmartAssetsImpl()
 
 export type { Component, CheckUpdateResult } from './types/muldiBundle';
 export { StatusBarMode } from './types/statusBarMode';

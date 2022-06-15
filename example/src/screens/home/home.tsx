@@ -36,11 +36,10 @@ const Home: React.FC<HomeScreenProps<HomeRouteName.Home>> = props => {
   }, []);
   useEffect(() => {
     getData();
-    const remove = onEvent(EventName.CHECK_UPDATE_DOWNLOAD_NEWS_APPLY, () => {
+    return onEvent(EventName.CHECK_UPDATE_DOWNLOAD_NEWS_APPLY, () => {
       getData();
       ToastAndroid.show('更新成功', 3000);
     });
-    return remove;
   }, []);
   return (
     <ScrollView

@@ -1,6 +1,7 @@
 import React from 'react';
 import Home from '@registry/home';
 import Test from '@registry/test';
+import { SmartAssets } from 'react-native-multibundle';
 import { ComponentName } from '@registry/index';
 import { AppRegistry, LogBox, Text } from 'react-native';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
@@ -35,3 +36,5 @@ LogBox.ignoreAllLogs();
     });
   };
 })(Text);
+
+SmartAssets.init();

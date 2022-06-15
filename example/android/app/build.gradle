@@ -142,7 +142,7 @@ android {
         versionName "1.0"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
         resValue("string","MultiBundleDefaultModuleName","Home")
-        resValue("string","MultiBundleServerHost","http://192.168.8.99:3000")
+        resValue("string","MultiBundleServerHost","http://172.16.20.210:3000")
 
         if (isNewArchitectureEnabled()) {
             // We configure the NDK build only if you decide to opt-in for the New Architecture.
@@ -269,6 +269,8 @@ dependencies {
     implementation "com.facebook.react:react-native:+"  // From node_modules
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+
+    implementation "android.arch.lifecycle:extensions:1.1.1"
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
         exclude group:'com.facebook.fbjni'
