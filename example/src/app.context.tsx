@@ -1,13 +1,11 @@
-import React, { useMemo, useContext, useCallback, useLayoutEffect } from 'react';
+import React, { useMemo, useContext } from 'react';
 import { NavigationContainer, DarkTheme } from '@react-navigation/native';
-import { StackNavigationOptions } from '@react-navigation/stack';
 import { CommonScreenProps } from '@navigators/index';
 import { isNil } from '@src/utils/utils';
 import { StatusBarMode, goBack } from 'react-native-multibundle';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { StatusBarHeight } from '@utils/constant';
 import BackSVG from '@assets/images/back.svg';
-import useEvent from '@hooks/useEvent';
 
 export interface ScreenProps {
   routeName: string;
@@ -18,7 +16,7 @@ export interface ScreenProps {
 }
 
 interface AppContextProps {
-  screenProps: ScreenProps
+  screenProps: ScreenProps;
 }
 
 const AppContext = React.createContext<AppContextProps>({
@@ -27,8 +25,8 @@ const AppContext = React.createContext<AppContextProps>({
     bundleName: '',
     moduleName: '',
     statusBarMode: -1,
-    goBack: false
-  }
+    goBack: false,
+  },
 });
 
 const AppProvider: React.FC<{ screenProps: ScreenProps }> = props => {
@@ -75,15 +73,15 @@ export const App: React.FC<ScreenProps> = props => {
   const { children, ...rest } = props;
   const { routeName = '', ...routeParams } = rest;
   const screenOptions = useMemo(() => getScreenOptions(routeParams), []);
-  return <AppProvider screenProps={rest}>
-    <NavigationContainer theme={DarkTheme}>
-      {
-        React.cloneElement(children as React.ReactElement, {
+  return (
+    <AppProvider screenProps={rest}>
+      <NavigationContainer theme={DarkTheme}>
+        {React.cloneElement(children as React.ReactElement, {
           routeName,
           routeParams,
-          screenOptions
-        })
-      }
-    </NavigationContainer>
-  </AppProvider>;
+          screenOptions,
+        })}
+      </NavigationContainer>
+    </AppProvider>
+  );
 };

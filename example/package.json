@@ -44,7 +44,6 @@
     "metro-react-native-babel-preset": "^0.67.0",
     "react-native-svg-transformer": "^1.0.0",
     "react-test-renderer": "17.0.2",
-    "rn-multi-bundle": "^0.1.4",
     "typescript": "^4.4.4"
   },
   "resolutions": {

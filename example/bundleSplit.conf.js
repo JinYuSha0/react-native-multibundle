@@ -1,10 +1,12 @@
 module.exports = {
+  useGestureHandler: true,
   whiteList: Array.from(
     new Set([
       'index.js',
       'src/navigators/index.tsx',
       'src/registry/index.ts',
-      'src',
+      // 'src/app.context.tsx',
+      'src/bootstrap.tsx',
       'src/api',
       'src/components',
       'src/hooks',
@@ -13,4 +15,5 @@ module.exports = {
     ]),
   ),
   blackList: [],
+  bootstrap: ['src/bootstrap.tsx'],
 };
