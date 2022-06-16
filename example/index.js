@@ -12,7 +12,9 @@ const ComponentMap = {
 };
 
 Object.keys(ComponentMap).forEach(name => {
-  AppRegistry.registerComponent(name, () => gestureHandlerRootHOC(ComponentMap[name]));
+  AppRegistry.registerComponent(name, () =>
+    gestureHandlerRootHOC(ComponentMap[name]),
+  );
 });
 
 // 忽略警告

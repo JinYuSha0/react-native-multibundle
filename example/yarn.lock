@@ -7715,10 +7715,10 @@ rimraf@~2.6.2:
   dependencies:
     glob "^7.1.3"
 
-rn-multi-bundle@^0.1.2:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/rn-multi-bundle/-/rn-multi-bundle-0.1.2.tgz#c390b7feea7c993df1ed00ebbf3dc5b9953c39b3"
-  integrity sha512-qniP4dRtUxj4kJjG42W3z5iue17LYyat0TfWtwkAEaOO9BQ+yqZ4MOUzdjlyotjVnMlWtygSHSMqQKzpqREPXQ==
+rn-multi-bundle@^0.1.4:
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/rn-multi-bundle/-/rn-multi-bundle-0.1.4.tgz#45448623a6648dc4e1e834261450f83b7645f03f"
+  integrity sha512-lZ9tGCu3kCIw0YT2gfB5YIKdADeIyBGYO8w1dTIInMqYDmEaE4Omgd4jDDJkpTb7L5SBrXqp7BN4E1JySlfEDA==
   dependencies:
     "@react-native-community/cli" "^5.0.1"
     babel-core "7.0.0-bridge.0"
