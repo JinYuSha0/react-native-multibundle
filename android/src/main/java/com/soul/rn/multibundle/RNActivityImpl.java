@@ -21,16 +21,24 @@ import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.facebook.react.modules.core.PermissionListener;
 import com.jaeger.library.StatusBarUtil;
 import com.soul.rn.multibundle.BuildConfig;
+import com.soul.rn.multibundle.constant.EventName;
 import com.soul.rn.multibundle.constant.StatusBar;
+import com.soul.rn.multibundle.utils.FileUtil;
 
+import java.io.File;
 import java.lang.reflect.Constructor;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActivity implements DefaultHardwareBackBtnHandler, PermissionAwareActivity {
-  private boolean bundleLoaded = false;
+  protected boolean bundleLoaded = false;
+  protected String jsBundleUrl = null;
+  private boolean resumeOnce = true;
   private ReactNativeHost mReactNativeHost;
   private boolean isDev;
   private RNActivityDelegate mDelegate;
+  protected String reallyFilePath = null;
   private static ArrayList<RNActivityImpl> mActivityList = new ArrayList();
 
   synchronized public static RNActivityImpl getActivity() {
@@ -122,6 +130,7 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
                 bundleLoaded = success;
                 if (success) {
                   runApp(bundlePath);
+                  onJsBundleChange(bundlePath);
                 } else {
                   currActivity.finish();
                 }
@@ -138,6 +147,7 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
             bundleLoaded = success;
             if (success) {
               runApp(bundlePath);
+              onJsBundleChange(bundlePath);
             } else {
               currActivity.finish();
             }
@@ -145,6 +155,16 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
         });
       }
     }
+  }
+
+  protected void onJsBundleChange(String bundlePath) {
+    if (bundlePath.startsWith("file://")) {
+      File file = new File(bundlePath);
+      String dirPath = file.getParent();
+      String reallyPath = dirPath.replaceAll("file:/", FileUtil.getExternalFilesDir(this)) + '/';
+      this.jsBundleUrl = "file://" + reallyPath;
+    }
+    MultiBundle.sendEventInner(EventName.JS_BUNDLE_CHANGE, this.jsBundleUrl);
   }
 
   protected void loadScript(LoadScriptListener loadScriptListener) {
@@ -205,6 +225,10 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
   protected void onResume() {
     super.onResume();
     mDelegate.onResume();
+    if (!resumeOnce) {
+      MultiBundle.sendEventInner(EventName.JS_BUNDLE_CHANGE, this.jsBundleUrl);
+    }
+    if (resumeOnce) resumeOnce = false;
   }
 
   @Override

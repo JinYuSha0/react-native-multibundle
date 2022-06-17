@@ -1,18 +1,18 @@
 // @ts-ignore
-import AssetSourceResolver from "react-native/Libraries/Image/AssetSourceResolver";
-import { NativeModules, Platform, NativeEventEmitter } from 'react-native';
-import { StatusBarMode } from './types/statusBarMode';
-import { EventName } from './types/eventName';
-import type { TNativeConstants } from './types/nativeConstants';
-import type { Component, CheckUpdateResult } from './types/muldiBundle';
+import { setCustomSourceTransformer } from "react-native/Libraries/Image/resolveAssetSource";
+import { NativeModules, Platform, NativeEventEmitter } from "react-native";
+import { StatusBarMode } from "./types/statusBarMode";
+import { EventName } from "./types/eventName";
+import type { TNativeConstants } from "./types/nativeConstants";
+import type { Component, CheckUpdateResult } from "./types/muldiBundle";
 
-const IsIOS = Platform.OS === 'ios';
+const IsIOS = Platform.OS === "ios";
 
 const LINKING_ERROR =
   `The package 'react-native-multibundle' doesn't seem to be linked. Make sure: \n\n` +
-  Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
-  '- You rebuilt the app after installing the package\n' +
-  '- You are not using Expo managed workflow\n';
+  Platform.select({ ios: "- You have run 'pod install'\n", default: "" }) +
+  "- You rebuilt the app after installing the package\n" +
+  "- You are not using Expo managed workflow\n";
 
 export const MultiBundle = NativeModules.MultiBundle
   ? NativeModules.MultiBundle
@@ -99,54 +99,47 @@ export function onEvent(
   return observer.remove;
 }
 
-class SmartAssetsImpl {
-  private drawableFiles: string[] = [];
-  private _sourceCodeScriptURL?: string;
+/**
+ * 打印日志
+ * @param msg
+ */
+export function log(msg: string) {
+  MultiBundle?.log(msg);
+}
 
-  getSourceCodeScriptURL() {
-    if (this._sourceCodeScriptURL) {
-      return this._sourceCodeScriptURL;
-    }
-    // @ts-ignore
-    let sourceCode = global.nativeExtensions && global.nativeExtensions.SourceCode;
-    if (!sourceCode) {
-      sourceCode = NativeModules && NativeModules.SourceCode;
-    }
-    this._sourceCodeScriptURL = sourceCode.scriptURL;
-    return this._sourceCodeScriptURL;
+class SmartAssetsImpl {
+  private jsbundleUrl: string | null = null;
+
+  init() {
+    setCustomSourceTransformer((resolver: any) => {
+      if (resolver.isLoadedFromServer()) {
+        return resolver.assetServerURL();
+      }
+
+      if (Platform.OS === "android") {
+        resolver.jsbundleUrl = this.jsbundleUrl;
+        if (resolver.isLoadedFromFileSystem()) {
+          let resolvedAssetSource = resolver.drawableFolderInBundle();
+          return resolvedAssetSource;
+        } else {
+          return resolver.resourceIdentifierWithoutScale();
+        }
+      } else {
+        return resolver.scaledAssetURLNearBundle();
+      }
+    });
+
+    onEvent(EventName.JS_BUNDLE_CHANGE, (jsbundleUrl: string) => {
+      this.setJsbundleUrl(jsbundleUrl);
+    });
   }
 
-  async init() {
-    this.drawableFiles = await MultiBundle?.travelDrawable(this.getSourceCodeScriptURL());
-    AssetSourceResolver.prototype.defaultAsset = function () {
-      if (this.isLoadedFromServer()) {
-        return this.assetServerURL();
-      }
-
-      if (Platform.OS === 'android') {
-        if(this.isLoadedFromFileSystem()){
-					let resolvedAssetSource = this.drawableFolderInBundle();
-					let resPath = resolvedAssetSource.uri;
-					if(this.drawableFiles.includes(resPath)) {
-						return resolvedAssetSource;
-					}
-					let isFileExist =  MultiBundle?.isFileExist(resPath);
-					if (isFileExist === true) {
-						return resolvedAssetSource;
-					} else {
-						return this.resourceIdentifierWithoutScale();
-					}
-				} else {
-					return this.resourceIdentifierWithoutScale();
-				}
-      } else {
-        return this.scaledAssetURLNearBundle();
-      }
-    }
+  setJsbundleUrl(newJsbundleUrl: string) {
+    this.jsbundleUrl = newJsbundleUrl;
   }
 }
-export const SmartAssets = new SmartAssetsImpl()
+export const SmartAssets = new SmartAssetsImpl();
 
-export type { Component, CheckUpdateResult } from './types/muldiBundle';
-export { StatusBarMode } from './types/statusBarMode';
-export { EventName } from './types/eventName';
+export type { Component, CheckUpdateResult } from "./types/muldiBundle";
+export { StatusBarMode } from "./types/statusBarMode";
+export { EventName } from "./types/eventName";
