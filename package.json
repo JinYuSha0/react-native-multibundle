@@ -8,7 +8,6 @@
   "files": [
     "/android",
     "/ios",
-    "/lib",
     "/src",
     "multibundle.podspec",
     "react-native.config.js",
