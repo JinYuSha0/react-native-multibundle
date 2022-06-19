@@ -1,16 +1,16 @@
 {
   "components": {
     "common.android.bundle": {
-      "hash": "279c99d1f7e52b32e0ed1a3cd85fb92c"
+      "hash": "f557c89ec096dc5ee20dae5c023d9d0d"
     },
     "home.buz.android.bundle": {
-      "hash": "3ea766adda26184d4af284cd7296d9a5",
+      "hash": "00560cd69355166be6c661d653f26fb8",
       "componentName": "Home"
     },
     "test.buz.android.bundle": {
-      "hash": "ae0b35b6e192db668e96818f098695c7",
+      "hash": "61d49884a31cf333e01cdd87931b1630",
       "componentName": "Test"
     }
   },
-  "timestamp": 1655457404062
+  "timestamp": 1655657530346
 }

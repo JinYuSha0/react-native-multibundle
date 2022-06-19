@@ -1,3 +1,4 @@
+import './src/bootstrap';
 import Home from '@registry/home';
 import Test from '@registry/test';
 import { ComponentName } from '@registry/index';

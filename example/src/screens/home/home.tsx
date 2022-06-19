@@ -55,11 +55,15 @@ const Home: React.FC<HomeScreenProps<HomeRouteName.Home>> = props => {
         return (
           <Card key={component.BundleName} style={styles.componentWrapper}>
             <View row style={{ justifyContent: 'space-between' }}>
-              <Text>{component.ComponentName || 'Common'}</Text>
-              <Text>{component.Version}</Text>
+              <Text black>{component.ComponentName || 'Common'}</Text>
+              <Text black>{component.Version}</Text>
             </View>
-            <Text marginT-6>{component.FilePath}</Text>
-            <Text marginT-6>{component.Hash}</Text>
+            <Text black marginT-6>
+              {component.FilePath}
+            </Text>
+            <Text black marginT-6>
+              {component.Hash}
+            </Text>
             <Button
               marginT-20
               disabled={!component.ComponentName}
