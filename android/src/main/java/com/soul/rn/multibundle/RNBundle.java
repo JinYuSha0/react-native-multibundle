@@ -25,4 +25,16 @@ public class RNBundle {
     bundle.putBundle("params", params);
     return bundle;
   }
+
+  public void setModuleName(String newModuleName) {
+    moduleName = newModuleName;
+  }
+
+  public void setParams(Bundle newParams) {
+    if (params != null) {
+      params.putAll(newParams);
+    } else {
+      params = newParams;
+    }
+  }
 }

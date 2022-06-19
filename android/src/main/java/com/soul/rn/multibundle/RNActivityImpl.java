@@ -3,6 +3,7 @@ package com.soul.rn.multibundle;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -104,13 +105,25 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
       return;
     }
     mActivityList.add(this);
-    Bundle bundle = getBundle().toBundle();
-    if (getIntent() != null && getIntent().getExtras() != null) {
-      bundle.putAll(getIntent().getExtras());
+
+    RNBundle innerBundle = getBundle();
+    Intent intent = getIntent();
+    if (intent != null) {
+      Uri uri = intent.getData();
+      if (uri != null) {
+        String scheme = uri.getScheme();
+        String host = uri.getHost();
+        String query = uri.getQuery();
+        innerBundle.setModuleName(host);
+        // todo
+//        getBundle().setParams(null);
+        Log.d("deepLink", "scheme: " + scheme + " host: " + host + " query: " + query);
+      }
     }
+
     // 设置StatusBar样式
-    setStatusBar(getBundle().params);
-    mDelegate.onCreate(bundle);
+    setStatusBar(innerBundle.params);
+    mDelegate.onCreate(innerBundle.toBundle());
     final Activity currActivity = this;
     ReactInstanceManager manager = mReactNativeHost.getReactInstanceManager();
     if (isDev) {
@@ -168,8 +181,8 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
   }
 
   protected void loadScript(LoadScriptListener loadScriptListener) {
-    final RNBundle bundle = getBundle();
-    String moduleName = bundle.moduleName;
+    final RNBundle innerBundle = getBundle();
+    String moduleName = innerBundle.moduleName;
     RNDBHelper.Result result = RNDBHelper.selectByComponentName(moduleName);
     CatalystInstance instance = RNBundleLoader.getCatalystInstance(mReactNativeHost);
     if (result == null) {
