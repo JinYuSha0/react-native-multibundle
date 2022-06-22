@@ -143,3 +143,4 @@ export const SmartAssets = new SmartAssetsImpl();
 export type { Component, CheckUpdateResult } from "./types/muldiBundle";
 export { StatusBarMode } from "./types/statusBarMode";
 export { EventName } from "./types/eventName";
+export { CustomTextInput } from "./components/CustomInput";

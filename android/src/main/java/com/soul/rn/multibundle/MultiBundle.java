@@ -21,6 +21,7 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.uimanager.ViewManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.soul.rn.multibundle.component.CustomInputManager;
 import com.soul.rn.multibundle.constant.EventName;
 import com.soul.rn.multibundle.constant.StorageKey;
 import com.soul.rn.multibundle.entity.Component;
@@ -42,7 +43,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -275,6 +276,8 @@ public class MultiBundle implements ReactPackage {
   @NonNull
   @Override
   public List<ViewManager> createViewManagers(@NonNull ReactApplicationContext reactContext) {
-    return Collections.emptyList();
+    return Arrays.<ViewManager>asList(
+            new CustomInputManager()
+    );
   }
 }
