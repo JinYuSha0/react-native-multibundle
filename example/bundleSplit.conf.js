@@ -11,6 +11,7 @@ module.exports = {
       'src/components',
       'src/hooks',
       'src/utils',
+      'src/assets',
       'app.json',
     ]),
   ),
