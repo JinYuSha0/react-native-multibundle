@@ -12,7 +12,7 @@ import com.facebook.react.views.textinput.ReactTextInputManager;
 @ReactModule(name = CustomInputManager.REACT_CLASS)
 public class CustomInputManager extends ReactTextInputManager {
     final static String REACT_CLASS = "CustomInput";
-    private String Thousands = ",";
+    private String Thousands;
     private TextWatcher currWatcher;
     private Integer type = -1;
 
@@ -38,6 +38,9 @@ public class CustomInputManager extends ReactTextInputManager {
     public void setFormat(ReactEditText view, @Nullable int format) {
         removeCurrWatcher(view);
         if (format == 1) {
+            if (this.Thousands == null) {
+                this.Thousands = ",";
+            }
             addWatcher(view, new AmountFormatWatcher(view, getIsOnlyNumber(), this.Thousands));
         } else {
             this.Thousands = null;

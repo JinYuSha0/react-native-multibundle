@@ -3,7 +3,7 @@ import React from "react";
 import TextInput from "./TextInput";
 import { TextInputProps } from "react-native";
 
-interface CustomTextInputProps extends TextInputProps {
+export interface CustomTextInputProps extends TextInputProps {
   onlyNumber?: boolean;
   thousandth?: boolean;
   separator?: string;
