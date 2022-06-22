@@ -12,10 +12,12 @@ public class AmountFormatWatcher implements TextWatcher {
     EditText editText;
     private static String thousands;
     private boolean onlyNumber = false;
+    private boolean decimal = false;
 
-    public AmountFormatWatcher(EditText editText, boolean onlyNumber, @Nullable String thousands) {
+    public AmountFormatWatcher(EditText editText, boolean onlyNumber, boolean decimal, @Nullable String thousands) {
         this.editText = editText;
         this.onlyNumber = onlyNumber;
+        this.decimal = decimal;
         AmountFormatWatcher.thousands = thousands;
     }
 
@@ -35,12 +37,15 @@ public class AmountFormatWatcher implements TextWatcher {
             String str = editText.getText().toString();
 
             if (onlyNumber) {
-                if(str.startsWith(".")){
-                    str = "0.";
+                if (this.decimal) {
+                    if(str.startsWith(".")){
+                        str = "0.";
+                    }
+                    str = str.replaceAll("[^(0-9)|\\.]", "");
+                } else {
+                    str = str.replaceAll("[^(0-9)]", "");
                 }
-                str = str.replaceAll("[^(0-9)|\\.]", "");
             }
-
 
             if(onlyNumber && AmountFormatWatcher.thousands != null && !str.equals("")) {
                 str = getDecimalFormattedString(str);

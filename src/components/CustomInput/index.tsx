@@ -6,6 +6,7 @@ import { TextInputProps } from "react-native";
 export interface CustomTextInputProps extends TextInputProps {
   onlyNumber?: boolean;
   thousandth?: boolean;
+  decimal?: boolean;
   separator?: string;
 }
 

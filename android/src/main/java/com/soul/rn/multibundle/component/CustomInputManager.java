@@ -15,8 +15,9 @@ public class CustomInputManager extends ReactTextInputManager {
     private String Thousands;
     private TextWatcher currWatcher;
     private Integer type = -1;
+    private boolean decimal = false;
 
-    public Boolean getIsOnlyNumber() {
+    public boolean getIsOnlyNumber() {
         return this.type == 2;
     }
 
@@ -30,7 +31,7 @@ public class CustomInputManager extends ReactTextInputManager {
         view.setInputType(type);
         this.type = type;
         if (type == 2) {
-            addWatcher(view, new AmountFormatWatcher(view, getIsOnlyNumber(), this.Thousands));
+            addWatcher(view, new AmountFormatWatcher(view, getIsOnlyNumber(), this.decimal, this.Thousands));
         }
     }
 
@@ -41,7 +42,7 @@ public class CustomInputManager extends ReactTextInputManager {
             if (this.Thousands == null) {
                 this.Thousands = ",";
             }
-            addWatcher(view, new AmountFormatWatcher(view, getIsOnlyNumber(), this.Thousands));
+            addWatcher(view, new AmountFormatWatcher(view, getIsOnlyNumber(), this.decimal, this.Thousands));
         } else {
             this.Thousands = null;
         }
@@ -51,7 +52,15 @@ public class CustomInputManager extends ReactTextInputManager {
     public void setThousands(ReactEditText view, @Nullable String thousands) {
         if (thousands != null) {
             this.Thousands = thousands;
-            addWatcher(view, new AmountFormatWatcher(view, getIsOnlyNumber(), this.Thousands));
+            addWatcher(view, new AmountFormatWatcher(view, getIsOnlyNumber(), this.decimal, this.Thousands));
+        }
+    }
+
+    @ReactProp(name = "decimal")
+    public void setDecimal(ReactEditText view, @Nullable Boolean decimal) {
+        if (decimal != null) {
+            this.decimal = decimal;
+            addWatcher(view, new AmountFormatWatcher(view, getIsOnlyNumber(), this.decimal, this.Thousands));
         }
     }
 

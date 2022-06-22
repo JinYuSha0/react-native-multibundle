@@ -1,7 +1,7 @@
 {
   "name": "react-native-multibundle",
   "title": "react-native-multibundle",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "multibundle",
   "homepage": "https://github.com/JinYuSha0/react-native-multibundle",
   "main": "src/index.ts",
