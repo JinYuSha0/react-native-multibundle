@@ -35,15 +35,33 @@ let EventEmitter: NativeEventEmitter;
  * @param moduleName
  * @param statusBarMode
  */
+export function openComponent(moduleName: string, finish: boolean): void;
 export function openComponent(
   moduleName: string,
-  statusBarMode: StatusBarMode = StatusBarMode.LIGHT,
-  finish: boolean = false
+  statusBarMode: StatusBarMode
+): void;
+export function openComponent(
+  moduleName: string,
+  finish: boolean,
+  statusBarMode: StatusBarMode
+): void;
+export function openComponent(
+  moduleName: string,
+  arg2: boolean | StatusBarMode,
+  arg3?: StatusBarMode
 ) {
   if (IsIOS) {
-    MultiBundle?.openComponent(moduleName, finish);
+    MultiBundle?.openComponent(moduleName, arg2);
   } else {
-    MultiBundle?.openComponent(moduleName, finish, statusBarMode);
+    if (arg3 == null) {
+      if (typeof arg2 === "boolean") {
+        MultiBundle?.openComponent(moduleName, arg2, StatusBarMode.LIGHT);
+      } else if (typeof arg2 === "number") {
+        MultiBundle?.openComponent(moduleName, false, arg2);
+      }
+    } else {
+      MultiBundle?.openComponent(moduleName, arg2, arg3);
+    }
   }
 }
 
