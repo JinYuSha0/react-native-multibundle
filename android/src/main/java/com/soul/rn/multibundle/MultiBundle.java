@@ -93,10 +93,10 @@ public class MultiBundle implements ReactPackage {
     params.putBoolean("goBack", true);
     Bundle bundle = createBundle(moduleName, statusBarMode, params);
     intent.putExtras(bundle);
+    activity.startActivity(intent);
     if (finish) {
       activity.finish();
     }
-    activity.startActivity(intent);
   }
 
   public static Bundle createBundle(String moduleName, @Nullable Integer statusBarMode, @Nullable Bundle params) {
