@@ -37,12 +37,13 @@ let EventEmitter: NativeEventEmitter;
  */
 export function openComponent(
   moduleName: string,
-  statusBarMode: StatusBarMode = StatusBarMode.LIGHT
+  statusBarMode: StatusBarMode = StatusBarMode.LIGHT,
+  finish: boolean = false
 ) {
   if (IsIOS) {
-    MultiBundle?.openComponent(moduleName);
+    MultiBundle?.openComponent(moduleName, finish);
   } else {
-    MultiBundle?.openComponent(moduleName, statusBarMode);
+    MultiBundle?.openComponent(moduleName, finish, statusBarMode);
   }
 }
 

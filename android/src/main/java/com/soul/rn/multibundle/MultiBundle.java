@@ -87,12 +87,15 @@ public class MultiBundle implements ReactPackage {
     mReactRootViewClazz = reactRootViewClass;
   }
 
-  public static void openComponent(Activity activity, String moduleName, @Nullable Integer statusBarMode) {
+  public static void openComponent(Activity activity, String moduleName, Boolean finish, @Nullable Integer statusBarMode) {
     Intent intent = new Intent(activity, RNActivity.class);
     Bundle params = new Bundle();
     params.putBoolean("goBack", true);
     Bundle bundle = createBundle(moduleName, statusBarMode, params);
     intent.putExtras(bundle);
+    if (finish) {
+      activity.finish();
+    }
     activity.startActivity(intent);
   }
 

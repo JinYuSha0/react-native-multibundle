@@ -41,10 +41,10 @@ public class MultiBundleModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void openComponent(String moduleName, @Nullable Integer statusBarMode) {
+    public void openComponent(String moduleName, Boolean finish, @Nullable Integer statusBarMode) {
         Activity activity = getCurrentActivity();
         if (activity == null) return;
-        MultiBundle.openComponent(activity, moduleName, statusBarMode);
+        MultiBundle.openComponent(activity, moduleName, finish, statusBarMode);
     }
 
     @ReactMethod
