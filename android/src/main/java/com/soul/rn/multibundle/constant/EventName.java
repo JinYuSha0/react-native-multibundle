@@ -1,8 +1,6 @@
 package com.soul.rn.multibundle.constant;
 
 public class EventName {
-    // bundle包路径改变
-    public static final String JS_BUNDLE_CHANGE = "JS_BUNDLE_CHANGE";
     // 检查更新开始
     public static final String CHECK_UPDATE_START = "CHECK_UPDATE_START";
     // 检查更新成功

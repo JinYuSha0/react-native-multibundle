@@ -124,6 +124,14 @@ export function onEvent(
 }
 
 /**
+ * 获取外部存储文件夹路径
+ * @returns
+ */
+export function getExternalFilesDir(): Promise<string> {
+  return MultiBundle?.getExternalFilesDir();
+}
+
+/**
  * 打印日志
  * @param msg
  */
@@ -132,16 +140,22 @@ export function log(msg: string) {
 }
 
 class SmartAssetsImpl {
-  private jsbundleUrl: string | null = null;
+  private static externalFilesDir: string | null = null;
 
   init() {
+    getExternalFilesDir().then(
+      (externalFilesDir) =>
+        (SmartAssetsImpl.externalFilesDir = externalFilesDir)
+    );
     setCustomSourceTransformer((resolver: any) => {
       if (resolver.isLoadedFromServer()) {
         return resolver.assetServerURL();
       }
 
       if (Platform.OS === "android") {
-        resolver.jsbundleUrl = this.jsbundleUrl;
+        if (!!resolver.asset.package) {
+          resolver.jsbundleUrl = `file://${SmartAssetsImpl.externalFilesDir}${resolver.asset.package}`;
+        }
         if (resolver.isLoadedFromFileSystem()) {
           let resolvedAssetSource = resolver.drawableFolderInBundle();
           return resolvedAssetSource;
@@ -152,19 +166,12 @@ class SmartAssetsImpl {
         return resolver.scaledAssetURLNearBundle();
       }
     });
-
-    onEvent(EventName.JS_BUNDLE_CHANGE, (jsbundleUrl: string) => {
-      this.setJsbundleUrl(jsbundleUrl);
-    });
-  }
-
-  setJsbundleUrl(newJsbundleUrl: string) {
-    this.jsbundleUrl = newJsbundleUrl;
   }
 }
 export const SmartAssets = new SmartAssetsImpl();
 
 export type { Component, CheckUpdateResult } from "./types/muldiBundle";
+export { ComponentType } from "./types/muldiBundle";
 export { StatusBarMode } from "./types/statusBarMode";
 export { EventName } from "./types/eventName";
 export {

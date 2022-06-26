@@ -16,10 +16,9 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.soul.rn.multibundle.iface.Callback;
+import com.soul.rn.multibundle.utils.FileUtil;
 import com.soul.rn.multibundle.utils.RNConvert;
 
-import java.io.File;
-import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -70,6 +69,11 @@ public class MultiBundleModule extends ReactContextBaseJavaModule {
                 promise.reject(null, errorMsg);
             }
         });
+    }
+
+    @ReactMethod
+    public void getExternalFilesDir(Promise promise) {
+        promise.resolve(FileUtil.getExternalFilesDir(this.getReactApplicationContext()));
     }
 
     @ReactMethod

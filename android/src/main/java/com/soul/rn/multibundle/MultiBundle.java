@@ -9,6 +9,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.facebook.react.ReactInstanceEventListener;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.ReactRootView;
@@ -21,7 +22,7 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.uimanager.ViewManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.soul.rn.multibundle.component.CustomInputManager;
+import com.soul.rn.multibundle.constant.ComponentType;
 import com.soul.rn.multibundle.constant.EventName;
 import com.soul.rn.multibundle.constant.StorageKey;
 import com.soul.rn.multibundle.entity.Component;
@@ -75,12 +76,6 @@ public class MultiBundle implements ReactPackage {
   public static void setReactNativeHostHolder(ReactNativeHostHolder reactNativeHostHolder) {
     if (reactNativeHostHolder == null) return;;
     mReactNativeHostHolder = reactNativeHostHolder;
-    if (mReactNativeHostHolder.createReactContextInBackground() && reactNativeHostHolder.getReactNativeHost() != null) {
-      ReactInstanceManager reactInstanceManager = reactNativeHostHolder.getReactNativeHost().getReactInstanceManager();
-      if (!isDev() && !reactInstanceManager.hasStartedCreatingInitialContext()) {
-        reactInstanceManager.createReactContextInBackground();
-      }
-    }
   }
 
   public static void setReactRootView(Class<ReactRootView> reactRootViewClass) {
@@ -122,11 +117,20 @@ public class MultiBundle implements ReactPackage {
           JSONObject value = (JSONObject) componentsObj.get(key);
           String hash = (String) value.get("hash");
           String componentName = null;
-          try {
-            componentName = (String) value.get("componentName");
-          } catch (Exception ignore) {}
+          Integer componentType = (Integer) value.get("componentType");
+          switch (ComponentType.getByValue(componentType)) {
+            case Common:
+              componentName = "Common";
+              break;
+            case Bootstrap:
+              componentName = "Bootstrap";
+              break;
+            case Default:
+              componentName = (String) value.get("componentName");
+              break;
+          }
           String filePath = "assets://" + key;
-          contentValuesArr.add(RNDBHelper.createContentValues(key,componentName,0,hash,filePath,publishTime));
+          contentValuesArr.add(RNDBHelper.createContentValues(key,componentName,componentType,0,hash,filePath,publishTime));
         }
         RNDBHelper.insertRows(contentValuesArr);
         Preferences.storageKV(StorageKey.INIT_DB,true);
@@ -150,7 +154,7 @@ public class MultiBundle implements ReactPackage {
       sendEventInner(EventName.CHECK_UPDATE_START, null);
       HashMap<String, String> params = new HashMap<>();
       params.put("platform", "android");
-      params.put("commonHash", componentMap.get("common").Hash);
+      params.put("commonHash", componentMap.get("Common").Hash);
       RequestManager.getInstance(ctx).Get(MULTI_BUNDLE_SERVER_HOST + "/rn/checkUpdate", params, new RequestManager.RequestCallBack<MyResponse<ArrayList<Component>>, MyResponse<Object>>() {
         @Override
         public void onFailure(MyResponse<Object> error, Exception exception) {
@@ -175,41 +179,41 @@ public class MultiBundle implements ReactPackage {
             if (!oldComponent.Hash.equals(newComponent.hash) && newComponent.version > oldComponent.Version) {
               sendEventInner(EventName.CHECK_UPDATE_DOWNLOAD_NEWS,newComponent);
               new Thread(new DownloadTask(
-                mContext,
-                newComponent.downloadUrl,
-                String.format("%s-%s.zip",newComponent.componentName,newComponent.hash),
-                downloadPath,
-                new DownloadProgressListener() {
-                  @Override
-                  public void onDownloadSize(int downloadedSize, int fileSize) {
-                    WritableMap progress = Arguments.createMap();
-                    progress.putString("componentName",newComponent.componentName);
-                    progress.putDouble("progress", (double) downloadedSize / (double) fileSize);
-                    sendEventInner(EventName.CHECK_UPDATE_DOWNLOAD_PROGRESS,progress);
-                  }
+                      mContext,
+                      newComponent.downloadUrl,
+                      String.format("%s-%s.zip",newComponent.componentName,newComponent.hash),
+                      downloadPath,
+                      new DownloadProgressListener() {
+                        @Override
+                        public void onDownloadSize(int downloadedSize, int fileSize) {
+                          WritableMap progress = Arguments.createMap();
+                          progress.putString("componentName",newComponent.componentName);
+                          progress.putDouble("progress", (double) downloadedSize / (double) fileSize);
+                          sendEventInner(EventName.CHECK_UPDATE_DOWNLOAD_PROGRESS,progress);
+                        }
 
-                  @Override
-                  public void onDownloadFailure(Exception e) {
-                    sendEventInner(EventName.CHECK_UPDATE_DOWNLOAD_NEWS_FAILURE,e.getMessage());
-                  }
+                        @Override
+                        public void onDownloadFailure(Exception e) {
+                          sendEventInner(EventName.CHECK_UPDATE_DOWNLOAD_NEWS_FAILURE,e.getMessage());
+                        }
 
-                  @Override
-                  public void onDownLoadComplete(File originFile) {
-                    File file = new File(String.format("%s/%s",downloadPath.getAbsolutePath(),newComponent.hash));
-                    try {
-                      originFile.renameTo(file);
-                      String dest = String.format("%s/%s/",downloadPath.getAbsolutePath(),newComponent.componentName);
-                      ZipFile zipFile = new ZipFile(file);
-                      zipFile.extractAll(dest);
-                      setupComponent(ctx,String.format("%s%s",dest,newComponent.hash),newComponent.version);
-                      sendEventInner(EventName.CHECK_UPDATE_DOWNLOAD_NEWS_SUCCESS,newComponent);
-                    } catch (Exception e) {
-                      e.printStackTrace();
-                    } finally {
-                      file.delete();
-                    }
-                  }
-                })
+                        @Override
+                        public void onDownLoadComplete(File originFile) {
+                          File file = new File(String.format("%s/%s",downloadPath.getAbsolutePath(),newComponent.hash));
+                          try {
+                            originFile.renameTo(file);
+                            String dest = String.format("%s/%s/",downloadPath.getAbsolutePath(),newComponent.componentName);
+                            ZipFile zipFile = new ZipFile(file);
+                            zipFile.extractAll(dest);
+                            setupComponent(ctx,String.format("%s%s",dest,newComponent.hash),newComponent.version);
+                            sendEventInner(EventName.CHECK_UPDATE_DOWNLOAD_NEWS_SUCCESS,newComponent);
+                          } catch (Exception e) {
+                            e.printStackTrace();
+                          } finally {
+                            file.delete();
+                          }
+                        }
+                      })
               ).start();
             }
           }
@@ -238,12 +242,13 @@ public class MultiBundle implements ReactPackage {
       if (FileUtil.fileExists(bundleFilePath)) {
         String saveBundleFilePath = bundleFilePath.replaceAll(ctx.getExternalFilesDir(null).getAbsolutePath() + "/","file://");
         RNDBHelper.insertRow(RNDBHelper.createContentValues(
-          componentSetting.bundleName,
-          componentSetting.componentName,
-          version,
-          componentSetting.hash,
-          saveBundleFilePath,
-          componentSetting.timestamp
+                componentSetting.bundleName,
+                componentSetting.componentName,
+                componentSetting.componentType,
+                version,
+                componentSetting.hash,
+                saveBundleFilePath,
+                componentSetting.timestamp
         ));
         sendEventInner(EventName.CHECK_UPDATE_DOWNLOAD_NEWS_APPLY,componentSetting.componentName);
         // 立即应用新模块

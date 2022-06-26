@@ -1,6 +1,13 @@
+export enum ComponentType {
+  Common = 0,
+  Bootstrap = 1,
+  Default = 2,
+}
+
 export interface Component {
   BundleName: string;
   ComponentName: string;
+  ComponentType: ComponentType;
   Version: number;
   Hash: string;
   FilePath: string;

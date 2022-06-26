@@ -12,6 +12,7 @@ import android.view.KeyEvent;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import com.facebook.react.ReactInstanceEventListener;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactRootView;
@@ -21,21 +22,14 @@ import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.facebook.react.modules.core.PermissionListener;
 import com.jaeger.library.StatusBarUtil;
-import com.soul.rn.multibundle.BuildConfig;
-import com.soul.rn.multibundle.constant.EventName;
+import com.soul.rn.multibundle.constant.ComponentType;
 import com.soul.rn.multibundle.constant.StatusBar;
-import com.soul.rn.multibundle.utils.FileUtil;
 
-import java.io.File;
 import java.lang.reflect.Constructor;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActivity implements DefaultHardwareBackBtnHandler, PermissionAwareActivity {
   protected boolean bundleLoaded = false;
-  protected String jsBundleUrl = null;
-  private boolean resumeOnce = true;
   private ReactNativeHost mReactNativeHost;
   private boolean isDev;
   private RNActivityDelegate mDelegate;
@@ -127,23 +121,24 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
     final Activity currActivity = this;
     ReactInstanceManager manager = mReactNativeHost.getReactInstanceManager();
     if (isDev) {
-     initView();
+      initView();
     } else {
       // 非开发模式走拆包流程
       if (!manager.hasStartedCreatingInitialContext() || RNBundleLoader.getCatalystInstance(mReactNativeHost) == null) {
         if (manager.hasStartedCreatingInitialContext()) {
           mReactNativeHost.getReactInstanceManager().destroy();
         }
-        manager.addReactInstanceEventListener(new ReactInstanceManager.ReactInstanceEventListener() {
+        manager.addReactInstanceEventListener(new ReactInstanceEventListener() {
           @Override
           public void onReactContextInitialized(ReactContext context) {
+            RNDBHelper.Result result = RNDBHelper.selectByComponentName("Bootstrap");
+            RNBundleLoader.loadScript(context,RNBundleLoader.getCatalystInstance(mReactNativeHost),result.FilePath,true);
             loadScript(new LoadScriptListener() {
               @Override
               public void onLoadComplete(boolean success, String bundlePath) {
                 bundleLoaded = success;
                 if (success) {
                   runApp(bundlePath);
-                  onJsBundleChange(bundlePath);
                 } else {
                   currActivity.finish();
                 }
@@ -160,7 +155,6 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
             bundleLoaded = success;
             if (success) {
               runApp(bundlePath);
-              onJsBundleChange(bundlePath);
             } else {
               currActivity.finish();
             }
@@ -170,23 +164,14 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
     }
   }
 
-  protected void onJsBundleChange(String bundlePath) {
-    if (bundlePath.startsWith("file://")) {
-      File file = new File(bundlePath);
-      String dirPath = file.getParent();
-      String reallyPath = dirPath.replaceAll("file:/", FileUtil.getExternalFilesDir(this)) + '/';
-      this.jsBundleUrl = "file://" + reallyPath;
-    }
-    MultiBundle.sendEventInner(EventName.JS_BUNDLE_CHANGE, this.jsBundleUrl);
-  }
-
   protected void loadScript(LoadScriptListener loadScriptListener) {
     final RNBundle innerBundle = getBundle();
     String moduleName = innerBundle.moduleName;
     RNDBHelper.Result result = RNDBHelper.selectByComponentName(moduleName);
     CatalystInstance instance = RNBundleLoader.getCatalystInstance(mReactNativeHost);
-    if (result == null) {
-      // 未曾加载的模块
+    if (result == null || result.ComponentType != ComponentType.Default.getIndex()) {
+      // 未曾安装的模块或者无法打开的模块
+      loadScriptListener.onLoadComplete(false,null);
     } else {
       RNBundleLoader.loadScript(getApplicationContext(),instance,result.FilePath,false);
       loadScriptListener.onLoadComplete(true,result.FilePath);
@@ -238,10 +223,6 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
   protected void onResume() {
     super.onResume();
     mDelegate.onResume();
-    if (!resumeOnce) {
-      MultiBundle.sendEventInner(EventName.JS_BUNDLE_CHANGE, this.jsBundleUrl);
-    }
-    if (resumeOnce) resumeOnce = false;
   }
 
   @Override

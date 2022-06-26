@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.soul.rn.multibundle.constant.ComponentType;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -21,7 +23,7 @@ public class RNDBHelper extends SQLiteOpenHelper {
 
   @Override
   public void onCreate(SQLiteDatabase sqLiteDatabase) {
-    String sql = "create table if not exists " + TABLE_NAME + " (BundleName varchar(100), ComponentName varchar(100), Version interge, Hash varchar(100), Filepath varchar(100), PublishTime interge, InstallTime integer, primary key(BundleName, Version))";
+    String sql = "create table if not exists " + TABLE_NAME + " (BundleName varchar(100), ComponentName varchar(100), ComponentType interge, Version interge, Hash varchar(100), Filepath varchar(100), PublishTime interge, InstallTime integer, primary key(BundleName, Version))";
     sqLiteDatabase.execSQL(sql);
   }
 
@@ -63,9 +65,10 @@ public class RNDBHelper extends SQLiteOpenHelper {
     }
   }
 
-  public static ContentValues createContentValues(String BundleName, String ComponentName, Integer Version, String Hash, String Filepath, Long PublishTime) {
+  public static ContentValues createContentValues(String BundleName, String ComponentName, Integer ComponentType, Integer Version, String Hash, String Filepath, Long PublishTime) {
     ContentValues contentValues = new ContentValues();
     contentValues.put("ComponentName", ComponentName);
+    contentValues.put("ComponentType", ComponentType);
     contentValues.put("BundleName", BundleName);
     contentValues.put("Version", Version);
     contentValues.put("Hash", Hash);
@@ -78,6 +81,7 @@ public class RNDBHelper extends SQLiteOpenHelper {
   public static Result parseCursor(Cursor cursor) {
     Result result = new Result(cursor.getString(cursor.getColumnIndex("BundleName")),
             cursor.getString(cursor.getColumnIndex("ComponentName")),
+            cursor.getInt(cursor.getColumnIndex("ComponentType")),
             cursor.getInt(cursor.getColumnIndex("Version")),
             cursor.getString(cursor.getColumnIndex("Hash")),
             cursor.getString(cursor.getColumnIndex("Filepath")),
@@ -113,7 +117,17 @@ public class RNDBHelper extends SQLiteOpenHelper {
     ArrayList<Result> components = RNDBHelper.selectAll();
     for (int i = 0; i < components.size(); i++) {
       Result curr = components.get(i);
-      result.put((curr.ComponentName == null || "".equals(curr.ComponentName)) ? "common" : curr.ComponentName , curr);
+      switch (ComponentType.getByValue(curr.ComponentType)) {
+        case Common:
+          result.put("Common", curr);
+          break;
+        case Bootstrap:
+          result.put("Bootstrap", curr);
+          break;
+        default:
+          result.put(curr.ComponentName, curr);
+          break;
+      }
     }
     return result;
   }
@@ -121,15 +135,17 @@ public class RNDBHelper extends SQLiteOpenHelper {
   public static class Result {
     String BundleName;
     String ComponentName;
+    Integer ComponentType;
     Integer Version;
     String Hash;
     String FilePath;
     Long PublishTime;
     Long InstallTime;
 
-    public Result(String bundleName, String componentName, Integer version, String hash, String filePath, Long publishTime, Long installTime) {
+    public Result(String bundleName, String componentName, Integer componentType, Integer version, String hash, String filePath, Long publishTime, Long installTime) {
       BundleName = bundleName;
       ComponentName = componentName;
+      ComponentType = componentType;
       Version = version;
       Hash = hash;
       FilePath = filePath;

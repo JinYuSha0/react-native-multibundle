@@ -108,11 +108,6 @@ public class MainApplication extends Application implements ReactApplication, Li
             public ReactNativeHost getReactNativeHost() {
                 return mReactNativeHost;
             }
-
-            @Override
-            public Boolean createReactContextInBackground() {
-                return true;
-            }
         });
     }
 

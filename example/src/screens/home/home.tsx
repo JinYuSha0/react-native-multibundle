@@ -15,6 +15,7 @@ import {
   onEvent,
   EventName,
   Component,
+  ComponentType,
 } from 'react-native-multibundle';
 
 const Home: React.FC<HomeScreenProps<HomeRouteName.Home>> = props => {
@@ -55,7 +56,7 @@ const Home: React.FC<HomeScreenProps<HomeRouteName.Home>> = props => {
         return (
           <Card key={component.BundleName} style={styles.componentWrapper}>
             <View row style={{ justifyContent: 'space-between' }}>
-              <Text black>{component.ComponentName || 'Common'}</Text>
+              <Text black>{component.ComponentName}</Text>
               <Text black>{component.Version}</Text>
             </View>
             <Text black marginT-6>
@@ -64,12 +65,14 @@ const Home: React.FC<HomeScreenProps<HomeRouteName.Home>> = props => {
             <Text black marginT-6>
               {component.Hash}
             </Text>
-            <Button
-              marginT-20
-              disabled={!component.ComponentName}
-              onPress={() => openComponent(component.ComponentName)}
-              label={'JUMP'}
-            />
+            {component.ComponentType === ComponentType.Default && (
+              <Button
+                marginT-20
+                disabled={!component.ComponentName}
+                onPress={() => openComponent(component.ComponentName)}
+                label={'JUMP'}
+              />
+            )}
           </Card>
         );
       })}

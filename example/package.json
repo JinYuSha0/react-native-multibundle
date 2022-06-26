@@ -8,6 +8,7 @@
     "start": "react-native start",
     "bundle-ios": "rn-multi-bundle -p ios -c bundleSplit.conf.js",
     "bundle-android": "rn-multi-bundle -c bundleSplit.conf.js",
+    "build-android": "./android/gradlew assembleDebug -x bundleDebugJsAndAssets",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
@@ -44,7 +45,7 @@
     "metro-react-native-babel-preset": "^0.67.0",
     "react-native-svg-transformer": "^1.0.0",
     "react-test-renderer": "17.0.2",
-    "rn-multi-bundle": "^0.1.9",
+    "rn-multi-bundle": "^0.2.4",
     "typescript": "^4.4.4"
   },
   "resolutions": {
