@@ -9,8 +9,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.facebook.react.ReactInstanceEventListener;
-import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.ReactRootView;
 import com.facebook.react.bridge.Arguments;
@@ -22,16 +20,15 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.uimanager.ViewManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.soul.rn.multibundle.component.CustomInputManager;
 import com.soul.rn.multibundle.constant.ComponentType;
 import com.soul.rn.multibundle.constant.EventName;
-import com.soul.rn.multibundle.constant.StorageKey;
 import com.soul.rn.multibundle.entity.Component;
 import com.soul.rn.multibundle.entity.ComponentSetting;
 import com.soul.rn.multibundle.iface.Callback;
 import com.soul.rn.multibundle.entity.MyResponse;
 import com.soul.rn.multibundle.iface.ReactNativeHostHolder;
 import com.soul.rn.multibundle.utils.FileUtil;
-import com.soul.rn.multibundle.utils.Preferences;
 import com.soul.rn.multibundle.utils.RNConvert;
 import com.soul.rn.multibundle.utils.RequestManager;
 import com.soul.rn.multibundle.utils.download.DownloadProgressListener;
@@ -43,8 +40,8 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -63,7 +60,6 @@ public class MultiBundle implements ReactPackage {
     DEFAULT_MODULE_NAME = defaultModuleName;
     MULTI_BUNDLE_SERVER_HOST = multiBundleSeverHost;
     mContext = context;
-    Preferences.init(mContext);
     RNDBHelper.init(mContext);
     initDB(mContext);
   }
@@ -103,8 +99,8 @@ public class MultiBundle implements ReactPackage {
   }
 
   public static void initDB(Context ctx) {
-    Boolean isInit = (Boolean) Preferences.getValueByKey(StorageKey.INIT_DB,Boolean.class);
-    if (!isInit) {
+    HashMap<String, RNDBHelper.Result> result = RNDBHelper.selectAllMap();
+    if (result.size() == 0) {
       try {
         String json = FileUtil.readFileFromAssets(ctx,"appSetting.json");
         JSONObject jsonObject = new JSONObject(json);
@@ -133,7 +129,6 @@ public class MultiBundle implements ReactPackage {
           contentValuesArr.add(RNDBHelper.createContentValues(key,componentName,componentType,0,hash,filePath,publishTime));
         }
         RNDBHelper.insertRows(contentValuesArr);
-        Preferences.storageKV(StorageKey.INIT_DB,true);
       } catch (Exception exception) {
         exception.printStackTrace();
       }

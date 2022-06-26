@@ -132,7 +132,7 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
           @Override
           public void onReactContextInitialized(ReactContext context) {
             RNDBHelper.Result result = RNDBHelper.selectByComponentName("Bootstrap");
-            RNBundleLoader.loadScript(context,RNBundleLoader.getCatalystInstance(mReactNativeHost),result.FilePath,true);
+            RNBundleLoader.loadScript(context,RNBundleLoader.getCatalystInstance(mReactNativeHost),result.FilePath,false);
             loadScript(new LoadScriptListener() {
               @Override
               public void onLoadComplete(boolean success, String bundlePath) {
