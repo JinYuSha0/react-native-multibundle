@@ -9,8 +9,10 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.ReactRootView;
+import com.facebook.react.ReactInstanceEventListener;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -72,6 +74,22 @@ public class MultiBundle implements ReactPackage {
   public static void setReactNativeHostHolder(ReactNativeHostHolder reactNativeHostHolder) {
     if (reactNativeHostHolder == null) return;;
     mReactNativeHostHolder = reactNativeHostHolder;
+    if (mReactNativeHostHolder.createReactContextInBackground() && reactNativeHostHolder.getReactNativeHost() != null) {
+      ReactInstanceManager reactInstanceManager = reactNativeHostHolder.getReactNativeHost().getReactInstanceManager();
+      if (!isDev() && !reactInstanceManager.hasStartedCreatingInitialContext()) {
+        reactInstanceManager.createReactContextInBackground();
+        reactInstanceManager.addReactInstanceEventListener(new ReactInstanceEventListener() {
+          @Override
+          public void onReactContextInitialized(ReactContext context) {
+            RNDBHelper.Result result = RNDBHelper.selectByComponentName("Bootstrap");
+            if (result != null && result.FilePath != null) {
+              RNBundleLoader.loadScript(context,RNBundleLoader.getCatalystInstance(reactNativeHostHolder.getReactNativeHost()),result.FilePath,false);
+            }
+            reactInstanceManager.removeReactInstanceEventListener(this);
+          }
+        });
+      }
+    }
   }
 
   public static void setReactRootView(Class<ReactRootView> reactRootViewClass) {
