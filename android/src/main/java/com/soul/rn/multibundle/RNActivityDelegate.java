@@ -29,10 +29,12 @@ public class RNActivityDelegate extends ReactActivityDelegate {
   protected void onCreate(Bundle bundle) {
     String moduleName = bundle.getString("moduleName");
     Bundle params = bundle.getBundle("params");
-    if (mReactDelegate == null) {
+   if (mReactDelegate == null) {
       mReactDelegate = new ReactDelegate(this.getPlainActivity(), mReactNativeHost, moduleName, params) {
         protected ReactRootView createRootView() {
-          return RNActivityDelegate.this.createRootView();
+          ReactRootView reactRootView = RNActivityDelegate.this.createRootView();
+          reactRootView.setIsFabric(BuildConfig.IS_NEW_ARCHITECTURE_ENABLED);
+          return reactRootView;
         }
       };
     }
@@ -45,6 +47,11 @@ public class RNActivityDelegate extends ReactActivityDelegate {
     } catch (Exception err) {
       err.printStackTrace();
     }
+  }
+
+  @Override
+  protected boolean isConcurrentRootEnabled() {
+    return BuildConfig.IS_NEW_ARCHITECTURE_ENABLED;
   }
 
   @Override

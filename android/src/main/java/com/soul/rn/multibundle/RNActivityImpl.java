@@ -75,14 +75,17 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
       mDelegate = new RNActivityDelegate(this, null) {
         @Override
         protected ReactRootView createRootView() {
+          ReactRootView reactRootView;
           if (MultiBundle.mReactRootViewClazz != null) {
             try {
               Constructor constructor = MultiBundle.mReactRootViewClazz.getDeclaredConstructor(Context.class);
               constructor.setAccessible(true);
-              return (ReactRootView) constructor.newInstance(RNActivityImpl.this);
+              reactRootView = (ReactRootView) constructor.newInstance(RNActivityImpl.this);
             } catch (Exception ignore) {}
           }
-          return new ReactRootView(RNActivityImpl.this);
+          reactRootView = new ReactRootView(RNActivityImpl.this);
+          reactRootView.setIsFabric(BuildConfig.IS_NEW_ARCHITECTURE_ENABLED);
+          return reactRootView;
         }
       };
     }
