@@ -27,6 +27,8 @@ function dealProps(props: CustomTextInputProps) {
   return { ...props, ...extra };
 }
 
-export const CustomTextInput: React.FC<CustomTextInputProps> = (props) => {
-  return <TextInput {...dealProps(props)} />;
-};
+export const CustomTextInput = React.forwardRef<TextInput, TextInputProps>(
+  (props, ref) => {
+    return <TextInput ref={ref} {...dealProps(props)} />;
+  }
+);
