@@ -1,19 +1,19 @@
 package com.soul.rn.multibundle.constant;
 
 public class RNException {
-    public int code;
+    public String code;
     public String errorMessage;
 
-    public RNException(int code, String errorMessage) {
+    public RNException(String code, String errorMessage) {
         this.code = code;
         this.errorMessage = errorMessage;
     }
 
-    public int getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(int code) {
+    public void setCode(String code) {
         this.code = code;
     }
 
