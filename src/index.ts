@@ -48,25 +48,36 @@ export function openComponent(
 ): void;
 export function openComponent(
   moduleName: string,
+  finish: boolean,
+  statusBarMode: StatusBarMode,
+  params: any
+): void;
+export function openComponent(
+  moduleName: string,
   arg2?: boolean | StatusBarMode,
-  arg3?: StatusBarMode
+  arg3?: StatusBarMode,
+  arg4?: any
 ) {
   if (IsIOS) {
     MultiBundle?.openComponent(moduleName, arg2 ?? false);
   } else {
     if (arg2 == null) {
-      MultiBundle?.openComponent(moduleName, false, StatusBarMode.LIGHT);
+      MultiBundle?.openComponent(moduleName, false, StatusBarMode.LIGHT, null);
       return;
     }
     if (arg3 == null) {
       if (typeof arg2 === "boolean") {
-        MultiBundle?.openComponent(moduleName, arg2, StatusBarMode.LIGHT);
+        MultiBundle?.openComponent(moduleName, arg2, StatusBarMode.LIGHT, null);
       } else if (typeof arg2 === "number") {
-        MultiBundle?.openComponent(moduleName, false, arg2);
+        MultiBundle?.openComponent(moduleName, false, arg2, null);
       }
-    } else {
-      MultiBundle?.openComponent(moduleName, arg2, arg3);
+      return;
     }
+    if (arg4 == null) {
+      MultiBundle?.openComponent(moduleName, arg2, arg3, null);
+      return;
+    }
+    MultiBundle?.openComponent(moduleName, arg2, arg3, arg4);
   }
 }
 

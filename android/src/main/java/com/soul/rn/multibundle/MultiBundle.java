@@ -17,6 +17,7 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.uimanager.ViewManager;
@@ -96,11 +97,22 @@ public class MultiBundle implements ReactPackage {
     mReactRootViewClazz = reactRootViewClass;
   }
 
+  public static void openComponent(Activity activity, String moduleName, Boolean finish) {
+    openComponent(activity, moduleName, finish, null, null);
+  }
+
   public static void openComponent(Activity activity, String moduleName, Boolean finish, @Nullable Integer statusBarMode) {
+    openComponent(activity, moduleName, finish, statusBarMode, null);
+  }
+
+  public static void openComponent(Activity activity, String moduleName, Boolean finish, @Nullable Integer statusBarMode, @Nullable ReadableMap params) {
     Intent intent = new Intent(activity, RNActivity.class);
-    Bundle params = new Bundle();
-    params.putBoolean("goBack", true);
-    Bundle bundle = createBundle(moduleName, statusBarMode, params);
+    Bundle paramsBundle = new Bundle();
+    paramsBundle.putBoolean("goBack", true);
+    if (params != null) {
+      paramsBundle.putAll(Arguments.toBundle(params));
+    }
+    Bundle bundle = createBundle(moduleName, statusBarMode, paramsBundle);
     intent.putExtras(bundle);
     activity.startActivity(intent);
     if (finish) {

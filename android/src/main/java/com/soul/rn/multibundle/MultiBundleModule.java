@@ -13,6 +13,7 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.soul.rn.multibundle.iface.Callback;
@@ -40,10 +41,10 @@ public class MultiBundleModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void openComponent(String moduleName, Boolean finish, @Nullable Integer statusBarMode) {
+    public void openComponent(String moduleName, Boolean finish, @Nullable Integer statusBarMode, @Nullable ReadableMap params) {
         Activity activity = getCurrentActivity();
         if (activity == null) return;
-        MultiBundle.openComponent(activity, moduleName, finish, statusBarMode);
+        MultiBundle.openComponent(activity, moduleName, finish, statusBarMode, params);
     }
 
     @ReactMethod
