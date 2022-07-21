@@ -8,6 +8,7 @@ import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactDelegate;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactRootView;
+import com.soul.rn.multibundle.utils.SystemDetect;
 
 import java.lang.reflect.Field;
 
@@ -29,6 +30,9 @@ public class RNActivityDelegate extends ReactActivityDelegate {
   protected void onCreate(Bundle bundle) {
     String moduleName = bundle.getString("moduleName");
     Bundle params = bundle.getBundle("params");
+    if (SystemDetect.isMIUI(this.getContext())) {
+      params.putString("profile","UserHandle{0}");
+    }
     if (mReactDelegate == null) {
       mReactDelegate = new ReactDelegate(this.getPlainActivity(), mReactNativeHost, moduleName, params) {
         protected ReactRootView createRootView() {

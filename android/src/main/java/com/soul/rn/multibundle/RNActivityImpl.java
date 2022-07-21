@@ -126,7 +126,7 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
       initView();
     } else {
       // 非开发模式走拆包流程
-      if (!manager.hasStartedCreatingInitialContext() || RNBundleLoader.getCatalystInstance(mReactNativeHost) == null) {
+      if (!MultiBundle.mReactNativeHostHolder.createReactContextInBackground() && (!manager.hasStartedCreatingInitialContext() || RNBundleLoader.getCatalystInstance(mReactNativeHost) == null)) {
         if (manager.hasStartedCreatingInitialContext()) {
           mReactNativeHost.getReactInstanceManager().destroy();
         }
