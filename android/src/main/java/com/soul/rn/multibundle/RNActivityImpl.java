@@ -3,6 +3,7 @@ package com.soul.rn.multibundle;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import com.facebook.react.modules.core.PermissionListener;
 import com.jaeger.library.StatusBarUtil;
 import com.soul.rn.multibundle.constant.ComponentType;
 import com.soul.rn.multibundle.constant.StatusBar;
+import com.soul.rn.multibundle.iface.Callback;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -133,35 +135,45 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
           public void onReactContextInitialized(ReactContext context) {
             RNDBHelper.Result result = RNDBHelper.selectByComponentName("Bootstrap");
             RNBundleLoader.loadScript(context,RNBundleLoader.getCatalystInstance(mReactNativeHost),result.FilePath,false);
-            loadScript(new LoadScriptListener() {
-              @Override
-              public void onLoadComplete(boolean success, String bundlePath) {
-                bundleLoaded = success;
-                if (success) {
-                  runApp(bundlePath);
-                } else {
-                  currActivity.finish();
-                }
-              }
-            });
+            load();
             manager.removeReactInstanceEventListener(this);
           }
         });
         mReactNativeHost.getReactInstanceManager().createReactContextInBackground();
       } else {
-        loadScript(new LoadScriptListener() {
-          @Override
-          public void onLoadComplete(boolean success, String bundlePath) {
-            bundleLoaded = success;
-            if (success) {
-              runApp(bundlePath);
-            } else {
-              currActivity.finish();
+        if (!MultiBundle.BootstrapLoaded) {
+          Callback callback = new Callback() {
+            @Override
+            public void onSuccess(Object result) {
+              load();
             }
-          }
-        });
+
+            @Override
+            public void onError(String errorMsg) {
+            }
+          };
+          IntentFilter intentFilter = new IntentFilter();
+          intentFilter.addAction("RN_BOOTSTRAP");
+          this.registerReceiver(new RNBroadcastReceiver(callback), intentFilter);
+        } else {
+          load();
+        }
       }
     }
+  }
+
+  protected void load() {
+    loadScript(new LoadScriptListener() {
+      @Override
+      public void onLoadComplete(boolean success, String bundlePath) {
+        bundleLoaded = success;
+        if (success) {
+          runApp(bundlePath);
+        } else {
+          RNActivityImpl.this.finish();
+        }
+      }
+    });
   }
 
   protected void loadScript(LoadScriptListener loadScriptListener) {

@@ -58,6 +58,7 @@ public class MultiBundle implements ReactPackage {
   public static ReactNativeHostHolder mReactNativeHostHolder;
   public static Class<ReactRootView> mReactRootViewClazz = ReactRootView.class;
   public static Context mContext;
+  public static Boolean BootstrapLoaded = false;
 
   public MultiBundle(Context context, String defaultModuleName, String multiBundleSeverHost) {
     DEFAULT_MODULE_NAME = defaultModuleName;
@@ -85,6 +86,8 @@ public class MultiBundle implements ReactPackage {
             RNDBHelper.Result result = RNDBHelper.selectByComponentName("Bootstrap");
             if (result != null && result.FilePath != null) {
               RNBundleLoader.loadScript(context,RNBundleLoader.getCatalystInstance(reactNativeHostHolder.getReactNativeHost()),result.FilePath,false);
+              BootstrapLoaded = true;
+              mContext.sendBroadcast(new Intent("RN_BOOTSTRAP"));
             }
             reactInstanceManager.removeReactInstanceEventListener(this);
           }
