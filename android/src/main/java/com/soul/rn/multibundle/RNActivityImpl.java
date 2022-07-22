@@ -1,6 +1,7 @@
 package com.soul.rn.multibundle;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -142,10 +143,12 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
         mReactNativeHost.getReactInstanceManager().createReactContextInBackground();
       } else {
         if (!MultiBundle.BootstrapLoaded) {
+          RNActivityImpl self = this;
           Callback callback = new Callback() {
             @Override
             public void onSuccess(Object result) {
               load();
+              self.unregisterReceiver((BroadcastReceiver) result);
             }
 
             @Override

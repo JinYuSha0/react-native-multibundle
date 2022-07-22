@@ -15,6 +15,6 @@ public class RNBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        mCallback.onSuccess(true);
+        mCallback.onSuccess(this);
     }
 }
