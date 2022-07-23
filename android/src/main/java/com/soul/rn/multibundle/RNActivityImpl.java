@@ -106,16 +106,7 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
     RNBundle innerBundle = getBundle();
     Intent intent = getIntent();
     if (intent != null) {
-      Uri uri = intent.getData();
-      if (uri != null) {
-        String scheme = uri.getScheme();
-        String host = uri.getHost();
-        String query = uri.getQuery();
-        innerBundle.setModuleName(host);
-        // todo
-//        getBundle().setParams(null);
-        Log.d("deepLink", "scheme: " + scheme + " host: " + host + " query: " + query);
-      }
+      processDeepLink(intent);
     }
 
     // 设置StatusBar样式
@@ -284,6 +275,7 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
   public void onNewIntent(Intent intent) {
     if (!mDelegate.onNewIntent(intent)) {
       super.onNewIntent(intent);
+      processDeepLink(intent);
     }
   }
 
@@ -304,6 +296,8 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
   }
 
   public abstract RNBundle getBundle();
+
+  public abstract void processDeepLink(Intent intent);
 
   public static interface LoadScriptListener {
     public void onLoadComplete(boolean success, String bundlePath);

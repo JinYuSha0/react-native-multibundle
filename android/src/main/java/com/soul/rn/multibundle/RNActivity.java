@@ -44,4 +44,8 @@ public class RNActivity extends RNActivityImpl {
     super.onNewIntent(intent);
     setIntent(intent);
   }
+
+  @Override
+  public void processDeepLink(Intent intent) {
+  }
 }
