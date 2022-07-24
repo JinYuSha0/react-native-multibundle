@@ -7,7 +7,7 @@ import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
+import java.util.Collection;
 
 public class RNConvert {
   public static WritableMap obj2WritableMap(Object obj) {
@@ -33,8 +33,8 @@ public class RNConvert {
             map.putDouble(key, (Double) value);
           } else if (value instanceof Boolean) {
             map.putBoolean(key, (Boolean) value);
-          } else if (value instanceof ArrayList) {
-            map.putArray(key, array2WritableArray((ArrayList) value));
+          } else if (value instanceof Collection) {
+            map.putArray(key, array2WritableArray((Collection) value));
           } else  {
             map.putMap(key, obj2WritableMap(value));
           }
@@ -46,12 +46,13 @@ public class RNConvert {
     return map;
   }
 
-  public static WritableArray array2WritableArray(ArrayList list) {
+  public static WritableArray array2WritableArray(Collection list) {
     if (list == null) return null;
-    WritableArray writableArray =  Arguments.createArray();
+    WritableArray writableArray = Arguments.createArray();
     try {
+      Object[] objects = list.toArray();
       for (int i = 0; i < list.size(); i++) {
-        Object value = list.get(i);
+        Object value = objects[i];
         if (value == null) {
           writableArray.pushNull();
         } else {
@@ -65,8 +66,8 @@ public class RNConvert {
             writableArray.pushDouble((Double) value);
           } else if (value instanceof Boolean) {
             writableArray.pushBoolean((Boolean) value);
-          } else if (value instanceof ArrayList) {
-            writableArray.pushArray(array2WritableArray((ArrayList) value));
+          } else if (value instanceof Collection) {
+            writableArray.pushArray(array2WritableArray((Collection) value));
           } else  {
             writableArray.pushMap(obj2WritableMap(value));
           }
@@ -88,7 +89,7 @@ public class RNConvert {
     } else if (value instanceof ReadableMap) {
     } else if (value instanceof WritableArray) {
     } else if (value instanceof ReadableArray) {
-    } else if (value instanceof ArrayList) {
+    } else if (value instanceof Collection) {
       isBase = false;
     } else  {
       isBase = false;
@@ -109,8 +110,8 @@ public class RNConvert {
     if (isBaseType(obj)) {
       return compatible(obj);
     } else {
-      if (obj instanceof ArrayList) {
-        return array2WritableArray((ArrayList) obj);
+      if (obj instanceof Collection) {
+        return array2WritableArray((Collection) obj);
       } else {
         return obj2WritableMap(obj);
       }
