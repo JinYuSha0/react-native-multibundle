@@ -85,12 +85,16 @@ public class RequestManager {
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
-                    if (response.isSuccessful()) {
-                        T res = new Gson().fromJson(response.body().string(), callBack.getType(false));
-                        successCallBack(res, callBack);
-                    } else {
-                        E res = new Gson().fromJson(response.body().string(), callBack.getType(true));
-                        failureCallBack(res,null, callBack);
+                    try {
+                        if (response.isSuccessful()) {
+                            T res = new Gson().fromJson(response.body().string(), callBack.getType(false));
+                            successCallBack(res, callBack);
+                        } else {
+                            E res = new Gson().fromJson(response.body().string(), callBack.getType(true));
+                            failureCallBack(res,null, callBack);
+                        }
+                    } catch (Exception e) {
+                        failureCallBack(null,e, callBack);
                     }
                 }
             });

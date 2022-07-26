@@ -186,10 +186,10 @@ public class MultiBundle implements ReactPackage {
       RequestManager.getInstance(ctx).Get(MULTI_BUNDLE_SERVER_HOST + "/rn/checkUpdate", params, new RequestManager.RequestCallBack<MyResponse<ArrayList<Component>>, MyResponse<Object>>() {
         @Override
         public void onFailure(MyResponse<Object> error, Exception exception) {
-          String cause;
+          String cause = "unknown";
           if (exception != null) {
             cause = exception.getMessage();
-          } else {
+          } else if (error != null) {
             cause = error.message;
           }
           if (callback != null) callback.onError(cause);
