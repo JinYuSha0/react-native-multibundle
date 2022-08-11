@@ -94,7 +94,7 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
+    super.onCreate(null);
     // ReactNativeHost为空直接关闭
     if (mReactNativeHost == null) {
       this.finish();
