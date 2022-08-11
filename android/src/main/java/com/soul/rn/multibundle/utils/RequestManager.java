@@ -49,21 +49,34 @@ public class RequestManager {
         mOkHttpHandler = new Handler(context.getMainLooper());
     }
 
-    public <T, E> Call Get(String actionUrl, HashMap<String, String> paramsMap, RequestCallBack<T, E> callBack) {
-        return requestGetByAsync(actionUrl,paramsMap,callBack);
+    public <T, E> Call Get(String actionUrl, HashMap<String, String> paramsMap, HashMap<String, String> headersMap, RequestCallBack<T, E> callBack) {
+        return requestGetByAsync(actionUrl,paramsMap,headersMap,callBack);
     }
 
-    private Request.Builder addHeaders() {
-        Request.Builder builder = new Request.Builder()
-                .addHeader("Connection", "keep-alive")
-                .addHeader("platform", "android")
-                .addHeader("phoneModel", Build.MODEL)
-                .addHeader("systemVersion", Build.VERSION.RELEASE)
-                .addHeader("appVersion", AppVersionInfoUtil.getVersionName(ctx));
+    public <T, E> Call Get(String actionUrl, HashMap<String, String> paramsMap, RequestCallBack<T, E> callBack) {
+        return requestGetByAsync(actionUrl,paramsMap,null,callBack);
+    }
+
+    private Request.Builder addHeaders(HashMap<String, String> headersMap) {
+        Request.Builder builder = new Request.Builder();
+        if (headersMap != null) {
+            for (String key : headersMap.keySet()) {
+                String value = headersMap.get(key);
+                if (value != null) {
+                    builder.addHeader(key, value);
+                }
+            }
+        } else {
+            builder.addHeader("Connection", "keep-alive")
+                    .addHeader("platform", "android")
+                    .addHeader("phoneModel", Build.MODEL)
+                    .addHeader("systemVersion", Build.VERSION.RELEASE)
+                    .addHeader("appVersion", AppVersionInfoUtil.getVersionName(ctx));
+        }
         return builder;
     }
 
-    private <T, E> Call requestGetByAsync(String actionUrl, HashMap<String, String> paramsMap, final RequestCallBack<T, E> callBack) {
+    private <T, E> Call requestGetByAsync(String actionUrl, HashMap<String, String> paramsMap, HashMap<String, String> headersMap, final RequestCallBack<T, E> callBack) {
         StringBuilder tempParams = new StringBuilder();
         try {
             int pos = 0;
@@ -75,7 +88,7 @@ public class RequestManager {
                 pos++;
             }
             String requestUrl = String.format("%s?%s", actionUrl, tempParams.toString());
-            final Request request = addHeaders().url(requestUrl).build();
+            final Request request = addHeaders(headersMap).url(requestUrl).build();
             final Call call = mOkHttpClient.newCall(request);
             call.enqueue(new Callback() {
                 @Override
