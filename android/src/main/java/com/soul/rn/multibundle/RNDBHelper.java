@@ -65,6 +65,12 @@ public class RNDBHelper extends SQLiteOpenHelper {
     }
   }
 
+  public static void deleteAll() {
+    SQLiteDatabase db = mRNDBHelper.getReadableDatabase();
+    String sql = "DELETE FROM " + TABLE_NAME;
+    db.execSQL(sql);
+  }
+
   public static ContentValues createContentValues(String BundleName, String ComponentName, Integer ComponentType, Integer Version, String Hash, String Filepath, Long PublishTime) {
     ContentValues contentValues = new ContentValues();
     contentValues.put("ComponentName", ComponentName);

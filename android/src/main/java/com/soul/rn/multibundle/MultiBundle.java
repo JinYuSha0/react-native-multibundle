@@ -26,14 +26,17 @@ import com.google.gson.reflect.TypeToken;
 import com.soul.rn.multibundle.component.CustomInputManager;
 import com.soul.rn.multibundle.constant.ComponentType;
 import com.soul.rn.multibundle.constant.EventName;
+import com.soul.rn.multibundle.constant.StorageKey;
 import com.soul.rn.multibundle.entity.Component;
 import com.soul.rn.multibundle.entity.ComponentSetting;
 import com.soul.rn.multibundle.iface.Callback;
 import com.soul.rn.multibundle.entity.MyResponse;
 import com.soul.rn.multibundle.iface.ReactNativeHostHolder;
+import com.soul.rn.multibundle.utils.AppVersionInfoUtil;
 import com.soul.rn.multibundle.utils.FileUtil;
 import com.soul.rn.multibundle.utils.RNConvert;
 import com.soul.rn.multibundle.utils.RequestManager;
+import com.soul.rn.multibundle.utils.SPUtil;
 import com.soul.rn.multibundle.utils.download.DownloadProgressListener;
 import com.soul.rn.multibundle.utils.download.DownloadTask;
 
@@ -133,8 +136,11 @@ public class MultiBundle implements ReactPackage {
 
   public static void initDB(Context ctx) {
     HashMap<String, RNDBHelper.Result> result = RNDBHelper.selectAllMap();
-    if (result.size() == 0) {
+    String versionCode = String.valueOf(AppVersionInfoUtil.getVersionCode(ctx));
+    String currBundleVersion = SPUtil.getString(ctx,StorageKey.BUNDLE_VERSION);
+    if (result.size() == 0 || !versionCode.equals(currBundleVersion)) {
       try {
+        RNDBHelper.deleteAll();
         String json = FileUtil.readFileFromAssets(ctx,"appSetting.json");
         JSONObject jsonObject = new JSONObject(json);
         JSONObject componentsObj = jsonObject.getJSONObject("components");
@@ -162,6 +168,7 @@ public class MultiBundle implements ReactPackage {
           contentValuesArr.add(RNDBHelper.createContentValues(key,componentName,componentType,0,hash,filePath,publishTime));
         }
         RNDBHelper.insertRows(contentValuesArr);
+        SPUtil.putString(ctx, StorageKey.BUNDLE_VERSION,versionCode);
       } catch (Exception exception) {
         exception.printStackTrace();
       }
