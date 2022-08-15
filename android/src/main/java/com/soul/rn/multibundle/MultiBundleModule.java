@@ -79,7 +79,10 @@ public class MultiBundleModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void goBack() {
-        getCurrentActivity().finish();
+        Activity activity = getCurrentActivity();
+        if (activity != null && !activity.isFinishing()) {
+            getCurrentActivity().finish();
+        }
     }
 
     @ReactMethod
