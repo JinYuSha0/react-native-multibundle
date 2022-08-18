@@ -193,64 +193,72 @@ public class MultiBundle implements ReactPackage {
       RequestManager.getInstance(ctx).Get(MULTI_BUNDLE_SERVER_HOST + "/rn/checkUpdate", params, new RequestManager.RequestCallBack<MyResponse<ArrayList<Component>>, MyResponse<Object>>() {
         @Override
         public void onFailure(MyResponse<Object> error, Exception exception) {
-          String cause = "unknown";
-          if (exception != null) {
-            cause = exception.getMessage();
-          } else if (error != null) {
-            cause = error.message;
+          try {
+            String cause = "unknown";
+            if (exception != null) {
+              cause = exception.getMessage();
+            } else if (error != null) {
+              cause = error.message;
+            }
+            if (callback != null) callback.onError(cause);
+            sendEventInner(EventName.CHECK_UPDATE_FAILURE, cause);
+          } catch (Exception e) {
+            e.printStackTrace();
           }
-          if (callback != null) callback.onError(cause);
-          sendEventInner(EventName.CHECK_UPDATE_FAILURE, cause);
         }
 
         @Override
         public void onSuccess(MyResponse<ArrayList<Component>> result) {
-          if (callback != null) callback.onSuccess(result);
-          sendEventInner(EventName.CHECK_UPDATE_SUCCESS, result);
-          for (int i = 0; i < result.data.size(); i++) {
-            final Component newComponent = result.data.get(i);
-            final RNDBHelper.Result oldComponent = componentMap.get(newComponent.componentName);
-            // 如果hash不相同 且版本大于当前版本 下载新的bundle包
-            if (!oldComponent.Hash.equals(newComponent.hash) && newComponent.version > oldComponent.Version) {
-              sendEventInner(EventName.CHECK_UPDATE_DOWNLOAD_NEWS,newComponent);
-              new Thread(new DownloadTask(
-                      mContext,
-                      newComponent.downloadUrl,
-                      String.format("%s-%s.zip",newComponent.componentName,newComponent.hash),
-                      downloadPath,
-                      new DownloadProgressListener() {
-                        @Override
-                        public void onDownloadSize(int downloadedSize, int fileSize) {
-                          WritableMap progress = Arguments.createMap();
-                          progress.putString("componentName",newComponent.componentName);
-                          progress.putDouble("progress", (double) downloadedSize / (double) fileSize);
-                          sendEventInner(EventName.CHECK_UPDATE_DOWNLOAD_PROGRESS,progress);
-                        }
-
-                        @Override
-                        public void onDownloadFailure(Exception e) {
-                          sendEventInner(EventName.CHECK_UPDATE_DOWNLOAD_NEWS_FAILURE,e.getMessage());
-                        }
-
-                        @Override
-                        public void onDownLoadComplete(File originFile) {
-                          File file = new File(String.format("%s/%s",downloadPath.getAbsolutePath(),newComponent.hash));
-                          try {
-                            originFile.renameTo(file);
-                            String dest = String.format("%s/%s/",downloadPath.getAbsolutePath(),newComponent.componentName);
-                            ZipFile zipFile = new ZipFile(file);
-                            zipFile.extractAll(dest);
-                            setupComponent(ctx,String.format("%s%s",dest,newComponent.hash),newComponent.version);
-                            sendEventInner(EventName.CHECK_UPDATE_DOWNLOAD_NEWS_SUCCESS,newComponent);
-                          } catch (Exception e) {
-                            e.printStackTrace();
-                          } finally {
-                            file.delete();
+          try {
+            if (callback != null) callback.onSuccess(result);
+            sendEventInner(EventName.CHECK_UPDATE_SUCCESS, result);
+            for (int i = 0; i < result.data.size(); i++) {
+              final Component newComponent = result.data.get(i);
+              final RNDBHelper.Result oldComponent = componentMap.get(newComponent.componentName);
+              // 如果hash不相同 且版本大于当前版本 下载新的bundle包
+              if (!oldComponent.Hash.equals(newComponent.hash) && newComponent.version > oldComponent.Version) {
+                sendEventInner(EventName.CHECK_UPDATE_DOWNLOAD_NEWS,newComponent);
+                new Thread(new DownloadTask(
+                        mContext,
+                        newComponent.downloadUrl,
+                        String.format("%s-%s.zip",newComponent.componentName,newComponent.hash),
+                        downloadPath,
+                        new DownloadProgressListener() {
+                          @Override
+                          public void onDownloadSize(int downloadedSize, int fileSize) {
+                            WritableMap progress = Arguments.createMap();
+                            progress.putString("componentName",newComponent.componentName);
+                            progress.putDouble("progress", (double) downloadedSize / (double) fileSize);
+                            sendEventInner(EventName.CHECK_UPDATE_DOWNLOAD_PROGRESS,progress);
                           }
-                        }
-                      })
-              ).start();
+
+                          @Override
+                          public void onDownloadFailure(Exception e) {
+                            sendEventInner(EventName.CHECK_UPDATE_DOWNLOAD_NEWS_FAILURE,e.getMessage());
+                          }
+
+                          @Override
+                          public void onDownLoadComplete(File originFile) {
+                            File file = new File(String.format("%s/%s",downloadPath.getAbsolutePath(),newComponent.hash));
+                            try {
+                              originFile.renameTo(file);
+                              String dest = String.format("%s/%s/",downloadPath.getAbsolutePath(),newComponent.componentName);
+                              ZipFile zipFile = new ZipFile(file);
+                              zipFile.extractAll(dest);
+                              setupComponent(ctx,String.format("%s%s",dest,newComponent.hash),newComponent.version);
+                              sendEventInner(EventName.CHECK_UPDATE_DOWNLOAD_NEWS_SUCCESS,newComponent);
+                            } catch (Exception e) {
+                              e.printStackTrace();
+                            } finally {
+                              file.delete();
+                            }
+                          }
+                        })
+                ).start();
+              }
             }
+          } catch (Exception e) {
+            e.printStackTrace();
           }
         }
 
