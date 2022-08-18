@@ -1,5 +1,8 @@
 package com.soul.rn.multibundle.entity;
 
+import androidx.annotation.Keep;
+
+@Keep
 public class MyResponse<T> {
     public T data;
     public int code;

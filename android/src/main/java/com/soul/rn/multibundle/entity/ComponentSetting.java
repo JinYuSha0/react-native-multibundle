@@ -1,5 +1,8 @@
 package com.soul.rn.multibundle.entity;
 
+import androidx.annotation.Keep;
+
+@Keep
 public class ComponentSetting {
     public String hash;
     public String commonHash;
