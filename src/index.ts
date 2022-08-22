@@ -166,10 +166,7 @@ class SmartAssetsImpl {
       if (Platform.OS === "android") {
         if (!!resolver.asset.package) {
           resolver.jsbundleUrl = `file://${SmartAssetsImpl.externalFilesDir}${resolver.asset.package}`;
-        }
-        if (resolver.isLoadedFromFileSystem()) {
-          let resolvedAssetSource = resolver.drawableFolderInBundle();
-          return resolvedAssetSource;
+          return resolver.drawableFolderInBundle();
         } else {
           return resolver.resourceIdentifierWithoutScale();
         }
