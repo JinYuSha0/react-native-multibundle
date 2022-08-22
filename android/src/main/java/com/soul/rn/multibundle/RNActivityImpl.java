@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -95,6 +96,12 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(null);
+
+    // 安卓8不能设置强制横屏会产生崩溃
+    if (android.os.Build.VERSION.SDK_INT != Build.VERSION_CODES.O) {
+      setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
+
     // ReactNativeHost为空直接关闭
     if (mReactNativeHost == null) {
       this.finish();
@@ -220,8 +227,12 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
 
   @Override
   protected void onPause() {
-    super.onPause();
-    mDelegate.onPause();
+    try {
+      super.onPause();
+      mDelegate.onPause();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   @RequiresApi(api = Build.VERSION_CODES.M)
