@@ -230,7 +230,7 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
     try {
       super.onPause();
       mDelegate.onPause();
-    } catch (Exception e) {
+    } catch (Throwable e) {
       e.printStackTrace();
     }
   }
