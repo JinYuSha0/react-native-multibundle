@@ -21,6 +21,9 @@ public class CustomInputManager extends ReactTextInputManager {
         return this.type == 2;
     }
 
+    public CustomInputManager() {
+    }
+
     @Override
     public String getName() {
         return CustomInputManager.REACT_CLASS;
@@ -56,6 +59,8 @@ public class CustomInputManager extends ReactTextInputManager {
         if (thousands != null) {
             this.Thousands = thousands;
             addWatcher(view, new AmountFormatWatcher(view, getIsOnlyNumber(), this.decimal, this.Thousands));
+        } else {
+            removeCurrWatcher(view);
         }
     }
 
@@ -64,6 +69,8 @@ public class CustomInputManager extends ReactTextInputManager {
         if (decimal != null) {
             this.decimal = decimal;
             addWatcher(view, new AmountFormatWatcher(view, getIsOnlyNumber(), this.decimal, this.Thousands));
+        } else {
+            removeCurrWatcher(view);
         }
     }
 

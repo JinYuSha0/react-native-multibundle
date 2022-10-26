@@ -10,7 +10,7 @@ import java.util.StringTokenizer;
 
 public class AmountFormatWatcher implements TextWatcher {
     EditText editText;
-    private static String thousands;
+    private String thousands;
     private boolean onlyNumber = false;
     private boolean decimal = false;
 
@@ -18,7 +18,7 @@ public class AmountFormatWatcher implements TextWatcher {
         this.editText = editText;
         this.onlyNumber = onlyNumber;
         this.decimal = decimal;
-        AmountFormatWatcher.thousands = thousands;
+        this.thousands = thousands;
     }
 
     @Override
@@ -47,8 +47,8 @@ public class AmountFormatWatcher implements TextWatcher {
                 }
             }
 
-            if(onlyNumber && AmountFormatWatcher.thousands != null && !str.equals("")) {
-                str = getDecimalFormattedString(str);
+            if(onlyNumber && this.thousands != null && !str.equals("")) {
+                str = getDecimalFormattedString(str, this.thousands);
             }
 
             editText.setText(str);
@@ -62,7 +62,7 @@ public class AmountFormatWatcher implements TextWatcher {
         }
     }
 
-    public static String getDecimalFormattedString(String value)
+    public static String getDecimalFormattedString(String value, String thousands)
     {
         StringTokenizer lst = new StringTokenizer(value, ".");
         String str1 = value;
@@ -90,7 +90,7 @@ public class AmountFormatWatcher implements TextWatcher {
             }
             if (i == 3)
             {
-                str3 = AmountFormatWatcher.thousands + str3;
+                str3 = thousands + str3;
                 i = 0;
             }
             str3 = str1.charAt(k) + str3;
