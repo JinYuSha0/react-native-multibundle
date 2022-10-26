@@ -14,10 +14,10 @@ function dealProps(props: CustomTextInputProps) {
   const { onlyNumber, thousandth, separator } = props;
   const extra: Record<string, any> = {};
   if (onlyNumber) {
-    extra.type = 2;
+    extra.type = 1;
   }
   if (thousandth) {
-    extra.format = 1;
+    extra.type = 2;
     if (!separator) {
       extra.thousands = ",";
     } else {

@@ -1,5 +1,6 @@
 package com.soul.rn.multibundle.component;
 
+import android.text.InputType;
 import android.text.TextWatcher;
 
 import androidx.annotation.Nullable;
@@ -14,15 +15,8 @@ public class CustomInputManager extends ReactTextInputManager {
     final static String REACT_CLASS = "CustomInput";
     private String Thousands;
     private TextWatcher currWatcher;
-    private Integer type = -1;
-    private boolean decimal = false;
-
-    public boolean getIsOnlyNumber() {
-        return this.type == 2;
-    }
-
-    public CustomInputManager() {
-    }
+    private Integer type = 0;  // 1 纯数字 2 数字加千分位
+    private boolean decimal = false; // 允许小数点
 
     @Override
     public String getName() {
@@ -33,23 +27,13 @@ public class CustomInputManager extends ReactTextInputManager {
     public void setType(ReactEditText view, @Nullable int type) {
         view.setInputType(type);
         this.type = type;
-        if (type == 2) {
-            addWatcher(view, new AmountFormatWatcher(view, getIsOnlyNumber(), this.decimal, this.Thousands));
+        if (type == 1) {
+            view.setInputType(InputType.TYPE_CLASS_NUMBER);
+            addWatcher(view, new AmountFormatWatcher(view, true, this.decimal, null));
+        } else if (type == 2) {
+            view.setInputType(InputType.TYPE_CLASS_NUMBER);
+            addWatcher(view, new AmountFormatWatcher(view, true, this.decimal, this.Thousands));
         } else {
-            removeCurrWatcher(view);
-        }
-    }
-
-    @ReactProp(name = "format", defaultInt = 0)
-    public void setFormat(ReactEditText view, @Nullable int format) {
-        removeCurrWatcher(view);
-        if (format == 1) {
-            if (this.Thousands == null) {
-                this.Thousands = ",";
-            }
-            addWatcher(view, new AmountFormatWatcher(view, getIsOnlyNumber(), this.decimal, this.Thousands));
-        } else {
-            this.Thousands = null;
             removeCurrWatcher(view);
         }
     }
@@ -58,9 +42,7 @@ public class CustomInputManager extends ReactTextInputManager {
     public void setThousands(ReactEditText view, @Nullable String thousands) {
         if (thousands != null) {
             this.Thousands = thousands;
-            addWatcher(view, new AmountFormatWatcher(view, getIsOnlyNumber(), this.decimal, this.Thousands));
-        } else {
-            removeCurrWatcher(view);
+            setType(view,2);
         }
     }
 
@@ -68,9 +50,7 @@ public class CustomInputManager extends ReactTextInputManager {
     public void setDecimal(ReactEditText view, @Nullable Boolean decimal) {
         if (decimal != null) {
             this.decimal = decimal;
-            addWatcher(view, new AmountFormatWatcher(view, getIsOnlyNumber(), this.decimal, this.Thousands));
-        } else {
-            removeCurrWatcher(view);
+            setType(view,this.type);
         }
     }
 
