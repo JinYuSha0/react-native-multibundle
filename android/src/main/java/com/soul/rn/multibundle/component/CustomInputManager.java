@@ -32,6 +32,8 @@ public class CustomInputManager extends ReactTextInputManager {
         this.type = type;
         if (type == 2) {
             addWatcher(view, new AmountFormatWatcher(view, getIsOnlyNumber(), this.decimal, this.Thousands));
+        } else {
+            removeCurrWatcher(view);
         }
     }
 
@@ -45,6 +47,7 @@ public class CustomInputManager extends ReactTextInputManager {
             addWatcher(view, new AmountFormatWatcher(view, getIsOnlyNumber(), this.decimal, this.Thousands));
         } else {
             this.Thousands = null;
+            removeCurrWatcher(view);
         }
     }
 
