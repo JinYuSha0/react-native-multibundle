@@ -25,6 +25,7 @@ import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.facebook.react.modules.core.PermissionListener;
 import com.jaeger.library.StatusBarUtil;
+import com.soul.rn.multibundle.constant.BroadcastName;
 import com.soul.rn.multibundle.constant.ComponentType;
 import com.soul.rn.multibundle.constant.StatusBar;
 import com.soul.rn.multibundle.iface.Callback;
@@ -111,10 +112,6 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
     mActivityList.add(this);
 
     RNBundle innerBundle = getBundle();
-    Intent intent = getIntent();
-    if (intent != null) {
-      processDeepLink(intent);
-    }
 
     // 设置StatusBar样式
     setStatusBar(innerBundle.params);
@@ -154,12 +151,17 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
             }
           };
           IntentFilter intentFilter = new IntentFilter();
-          intentFilter.addAction("RN_BOOTSTRAP");
+          intentFilter.addAction(BroadcastName.RN_BOOTSTRAP);
           this.registerReceiver(new RNBroadcastReceiver(callback), intentFilter);
         } else {
           load();
         }
       }
+    }
+    // DeepLink
+    Intent intent = getIntent();
+    if (intent != null) {
+      processDeepLink(intent);
     }
   }
 

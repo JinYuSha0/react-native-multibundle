@@ -24,6 +24,7 @@ import com.facebook.react.uimanager.ViewManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.soul.rn.multibundle.component.CustomInputManager;
+import com.soul.rn.multibundle.constant.BroadcastName;
 import com.soul.rn.multibundle.constant.ComponentType;
 import com.soul.rn.multibundle.constant.EventName;
 import com.soul.rn.multibundle.constant.StorageKey;
@@ -90,7 +91,7 @@ public class MultiBundle implements ReactPackage {
             if (result != null && result.FilePath != null) {
               RNBundleLoader.loadScript(context,RNBundleLoader.getCatalystInstance(reactNativeHostHolder.getReactNativeHost()),result.FilePath,false);
               BootstrapLoaded = true;
-              mContext.sendBroadcast(new Intent("RN_BOOTSTRAP"));
+              mContext.sendBroadcast(new Intent(BroadcastName.RN_BOOTSTRAP));
             }
             reactInstanceManager.removeReactInstanceEventListener(this);
           }
