@@ -160,7 +160,7 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
     }
     // DeepLink
     Intent intent = getIntent();
-    if (intent != null) {
+    if (intent != null && intent.getData() != null) {
       processDeepLink(intent);
     }
   }
@@ -288,8 +288,9 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
   public void onNewIntent(Intent intent) {
     if (!mDelegate.onNewIntent(intent)) {
       super.onNewIntent(intent);
+    } else if (intent.getData() != null) {
+      processDeepLink(intent);
     }
-    processDeepLink(intent);
   }
 
   @Override

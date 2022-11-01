@@ -48,7 +48,6 @@ public class RNActivity extends RNActivityImpl {
 
   @Override
   public void processDeepLink(Intent intent) {
-    intent.setAction(BroadcastName.DEEP_LINK);
-    this.sendBroadcast(intent);
+    MultiBundle.mReactNativeHostHolder.onNewIntent(intent);
   }
 }
