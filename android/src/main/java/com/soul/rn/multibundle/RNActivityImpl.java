@@ -288,8 +288,8 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
   public void onNewIntent(Intent intent) {
     if (!mDelegate.onNewIntent(intent)) {
       super.onNewIntent(intent);
-      processDeepLink(intent);
     }
+    processDeepLink(intent);
   }
 
   @Override
