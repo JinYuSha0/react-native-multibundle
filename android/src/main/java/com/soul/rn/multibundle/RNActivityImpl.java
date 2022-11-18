@@ -1,5 +1,6 @@
 package com.soul.rn.multibundle;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -88,6 +89,11 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
             } catch (Exception ignore) {}
           }
           return new ReactRootView(RNActivityImpl.this);
+        }
+
+        @Override
+        protected void loadApp(String appKey) {
+          RNActivityImpl.this.loadApp(appKey, mDelegate);
         }
       };
     }
@@ -183,6 +189,12 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
     final RNBundle innerBundle = getBundle();
     String moduleName = innerBundle.moduleName;
     RNDBHelper.Result result = RNDBHelper.selectByComponentName(moduleName);
+    // 重新载入配置
+    if (result == null) {
+      RNDBHelper.deleteAll();
+      MultiBundle.initDB(this);
+      result = RNDBHelper.selectByComponentName(moduleName);
+    }
     CatalystInstance instance = RNBundleLoader.getCatalystInstance(mReactNativeHost);
     if (result == null || result.ComponentType != ComponentType.Default.getIndex()) {
       // 未曾安装的模块或者无法打开的模块
@@ -223,8 +235,9 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
     }
   }
 
-  protected final void loadApp(String appKey) {
-    mDelegate.loadApp(appKey);
+  protected void loadApp(String appKey, RNActivityDelegate delegate) {
+    delegate.loadAppExternal(appKey);
+    this.setContentView(delegate.getReactRootView());
   }
 
   @Override
@@ -301,6 +314,7 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
     mDelegate.requestPermissions(permissions, requestCode, listener);
   }
 
+  @SuppressLint("MissingSuperCall")
   @Override
   public void onRequestPermissionsResult(
           int requestCode,

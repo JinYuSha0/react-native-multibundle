@@ -3,7 +3,6 @@ package com.soul.rn.multibundle;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.soul.rn.multibundle.constant.BroadcastName;
 import com.soul.rn.multibundle.constant.StatusBar;
 
 public class RNActivity extends RNActivityImpl {
@@ -49,5 +48,10 @@ public class RNActivity extends RNActivityImpl {
   @Override
   public void processDeepLink(Intent intent) {
     MultiBundle.mReactNativeHostHolder.onNewIntent(intent);
+  }
+
+  @Override
+  protected void loadApp(String appKey, RNActivityDelegate delegate) {
+    super.loadApp(appKey, delegate);
   }
 }

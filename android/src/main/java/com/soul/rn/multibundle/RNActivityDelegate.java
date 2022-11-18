@@ -78,4 +78,14 @@ public class RNActivityDelegate extends ReactActivityDelegate {
     }
     return null;
   }
+
+  public void loadAppExternal(String appKey) {
+    mReactDelegate.loadApp(appKey);
+  }
+
+  public ReactRootView getReactRootView() {
+    if (mReactDelegate == null) return null;
+    return mReactDelegate.getReactRootView();
+  }
+
 }
