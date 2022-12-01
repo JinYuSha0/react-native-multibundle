@@ -4,18 +4,24 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Handler;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class RequestManager {
@@ -49,12 +55,16 @@ public class RequestManager {
         mOkHttpHandler = new Handler(context.getMainLooper());
     }
 
-    public <T, E> Call Get(String actionUrl, HashMap<String, String> paramsMap, HashMap<String, String> headersMap, RequestCallBack<T, E> callBack) {
+    public <T, E> Call Get(String actionUrl, @Nullable HashMap<String, String> paramsMap, @Nullable HashMap<String, String> headersMap, RequestCallBack<T, E> callBack) {
         return requestGetByAsync(actionUrl,paramsMap,headersMap,callBack);
     }
 
-    public <T, E> Call Get(String actionUrl, HashMap<String, String> paramsMap, RequestCallBack<T, E> callBack) {
+    public <T, E> Call Get(String actionUrl, @Nullable HashMap<String, String> paramsMap, RequestCallBack<T, E> callBack) {
         return requestGetByAsync(actionUrl,paramsMap,null,callBack);
+    }
+
+    public <T, E> Call Post(String actionUrl, @Nullable HashMap<String, Object> bodyMap, @Nullable HashMap<String, String> paramsMap, @Nullable HashMap<String, String> headersMap, RequestCallBack<T, E> callBack) {
+        return requestPostByAsync(actionUrl,bodyMap,paramsMap,headersMap,callBack);
     }
 
     private Request.Builder addHeaders(HashMap<String, String> headersMap) {
@@ -76,34 +86,36 @@ public class RequestManager {
         return builder;
     }
 
-    private <T, E> Call requestGetByAsync(String actionUrl, HashMap<String, String> paramsMap, HashMap<String, String> headersMap, final RequestCallBack<T, E> callBack) {
+    private <T, E> Call requestGetByAsync(String actionUrl, @Nullable HashMap<String, String> paramsMap, @Nullable HashMap<String, String> headersMap, final RequestCallBack<T, E> callBack) {
         StringBuilder tempParams = new StringBuilder();
         try {
-            int pos = 0;
-            for (String key : paramsMap.keySet()) {
-                if (pos > 0) {
-                    tempParams.append("&");
+            if (paramsMap != null) {
+                int pos = 0;
+                for (String key : paramsMap.keySet()) {
+                    if (pos > 0) {
+                        tempParams.append("&");
+                    }
+                    tempParams.append(String.format("%s=%s", key, URLEncoder.encode(paramsMap.get(key), "utf-8")));
+                    pos++;
                 }
-                tempParams.append(String.format("%s=%s", key, URLEncoder.encode(paramsMap.get(key), "utf-8")));
-                pos++;
             }
             String requestUrl = String.format("%s?%s", actionUrl, tempParams.toString());
             final Request request = addHeaders(headersMap).url(requestUrl).build();
             final Call call = mOkHttpClient.newCall(request);
             call.enqueue(new Callback() {
                 @Override
-                public void onFailure(Call call, IOException e) {
+                public void onFailure(@NonNull Call call, @NonNull IOException e) {
                     failureCallBack(null,e, callBack);
                 }
 
                 @Override
-                public void onResponse(Call call, Response response) throws IOException {
+                public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                     try {
                         if (response.isSuccessful()) {
-                            T res = new Gson().fromJson(response.body().string(), callBack.getType(false));
+                            T res = new Gson().fromJson(Objects.requireNonNull(response.body()).string(), callBack.getType(false));
                             successCallBack(res, callBack);
                         } else {
-                            E res = new Gson().fromJson(response.body().string(), callBack.getType(true));
+                            E res = new Gson().fromJson(Objects.requireNonNull(response.body()).string(), callBack.getType(true));
                             failureCallBack(res,null, callBack);
                         }
                     } catch (Exception e) {
@@ -118,6 +130,51 @@ public class RequestManager {
         return null;
     }
 
+    private <T, E> Call requestPostByAsync(String actionUrl, @Nullable HashMap<String, Object> bodyMap, @Nullable HashMap<String, String> paramsMap,  @Nullable HashMap<String, String> headersMap, final RequestCallBack<T, E> callBack) {
+        StringBuilder tempParams = new StringBuilder();
+        try {
+            if (paramsMap != null) {
+                int pos = 0;
+                for (String key : paramsMap.keySet()) {
+                    if (pos > 0) {
+                        tempParams.append("&");
+                    }
+                    tempParams.append(String.format("%s=%s", key, URLEncoder.encode(paramsMap.get(key), "utf-8")));
+                    pos++;
+                }
+            }
+            String requestUrl = String.format("%s?%s", actionUrl, tempParams.toString());
+            Gson gson = new Gson();
+            RequestBody body = RequestBody.create(gson.toJson(bodyMap), MediaType.parse("application/json"));
+            final Request request = addHeaders(headersMap).url(requestUrl).post(body).build();
+            final Call call = mOkHttpClient.newCall(request);
+            call.enqueue(new Callback() {
+                @Override
+                public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                    failureCallBack(null,e, callBack);
+                }
+
+                @Override
+                public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                    try {
+                        if (response.isSuccessful()) {
+                            T res = new Gson().fromJson(Objects.requireNonNull(response.body()).string(), callBack.getType(false));
+                            successCallBack(res, callBack);
+                        } else {
+                            E res = new Gson().fromJson(Objects.requireNonNull(response.body()).string(), callBack.getType(true));
+                            failureCallBack(res,null, callBack);
+                        }
+                    } catch (Exception e) {
+                        failureCallBack(null,e, callBack);
+                    }
+                }
+            });
+            return call;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     private <T, E> void successCallBack(final T result, final RequestCallBack<T, E> callBack) {
         mOkHttpHandler.post(new Runnable() {
