@@ -10,13 +10,13 @@ import java.util.StringTokenizer;
 
 public class AmountFormatWatcher implements TextWatcher {
     EditText editText;
-    private String thousands;
-    private boolean onlyNumber = false;
+    private String regex;
     private boolean decimal = false;
+    private String thousands;
 
-    public AmountFormatWatcher(EditText editText, boolean onlyNumber, boolean decimal, @Nullable String thousands) {
+    public AmountFormatWatcher(EditText editText, String regex, boolean decimal, @Nullable String thousands) {
         this.editText = editText;
-        this.onlyNumber = onlyNumber;
+        this.regex = regex;
         this.decimal = decimal;
         this.thousands = thousands;
     }
@@ -36,18 +36,16 @@ public class AmountFormatWatcher implements TextWatcher {
             editText.removeTextChangedListener(this);
             String str = editText.getText().toString();
 
-            if (onlyNumber) {
-                if (this.decimal) {
-                    if(str.startsWith(".")){
-                        str = "0.";
-                    }
-                    str = str.replaceAll("[^(0-9)|\\.]", "");
-                } else {
-                    str = str.replaceAll("[^(0-9)]", "");
+            if (this.decimal) {
+                if(str.startsWith(".")){
+                    str = "0.";
                 }
+                str = str.replaceAll("[^(0-9)|\\.]", "");
+            } else {
+                str = str.replaceAll(regex, "");
             }
 
-            if(onlyNumber && this.thousands != null && !str.equals("")) {
+            if(this.thousands != null && !str.equals("")) {
                 str = getDecimalFormattedString(str, this.thousands);
             }
 

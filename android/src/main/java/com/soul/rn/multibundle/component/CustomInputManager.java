@@ -17,6 +17,7 @@ public class CustomInputManager extends ReactTextInputManager {
     private TextWatcher currWatcher;
     private Integer type = 0;  // 1 纯数字 2 数字加千分位
     private boolean decimal = false; // 允许小数点
+    private String regex;
 
     @Override
     public String getName() {
@@ -29,10 +30,12 @@ public class CustomInputManager extends ReactTextInputManager {
         this.type = type;
         if (type == 1) {
             view.setInputType(InputType.TYPE_CLASS_NUMBER);
-            addWatcher(view, new AmountFormatWatcher(view, true, this.decimal, null));
+            addWatcher(view, new AmountFormatWatcher(view, "[^(0-9)]", this.decimal, null));
         } else if (type == 2) {
             view.setInputType(InputType.TYPE_CLASS_NUMBER);
-            addWatcher(view, new AmountFormatWatcher(view, true, this.decimal, this.Thousands));
+            addWatcher(view, new AmountFormatWatcher(view, "[^(0-9)]", this.decimal, this.Thousands));
+        } else if (type == 3) {
+            addWatcher(view, new AmountFormatWatcher(view, regex,false,null));
         } else {
             removeCurrWatcher(view);
         }
@@ -51,6 +54,14 @@ public class CustomInputManager extends ReactTextInputManager {
         if (decimal != null) {
             this.decimal = decimal;
             setType(view,this.type);
+        }
+    }
+
+    @ReactProp(name = "regex")
+    public void setExtraChar(ReactEditText view, @Nullable String regex) {
+        if (regex != null) {
+            this.regex = regex;
+            setType(view,3);
         }
     }
 
