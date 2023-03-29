@@ -24,9 +24,8 @@ public class CustomInputManager extends ReactTextInputManager {
         return CustomInputManager.REACT_CLASS;
     }
 
-    @ReactProp(name = "type", defaultInt = 0)
-    public void setType(ReactEditText view, @Nullable int type) {
-        view.setInputType(type);
+    @ReactProp(name = "myType", defaultInt = 0)
+    public void setMyType(ReactEditText view, @Nullable int type) {
         this.type = type;
         if (type == 1) {
             view.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -45,7 +44,7 @@ public class CustomInputManager extends ReactTextInputManager {
     public void setThousands(ReactEditText view, @Nullable String thousands) {
         if (thousands != null) {
             this.Thousands = thousands;
-            setType(view,2);
+            setMyType(view,2);
         }
     }
 
@@ -53,7 +52,7 @@ public class CustomInputManager extends ReactTextInputManager {
     public void setDecimal(ReactEditText view, @Nullable Boolean decimal) {
         if (decimal != null) {
             this.decimal = decimal;
-            setType(view,this.type);
+            setMyType(view,this.type);
         }
     }
 
@@ -61,7 +60,7 @@ public class CustomInputManager extends ReactTextInputManager {
     public void setExtraChar(ReactEditText view, @Nullable String regex) {
         if (regex != null) {
             this.regex = regex;
-            setType(view,3);
+            setMyType(view,3);
         }
     }
 

@@ -1,6 +1,7 @@
 package com.soul.rn.multibundle.component;
 
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
@@ -13,7 +14,7 @@ public class AmountFormatWatcher implements TextWatcher {
     private String regex;
     private boolean decimal = false;
     private String thousands;
-    private String prevText;
+    private boolean flag = false;
 
     public AmountFormatWatcher(EditText editText, String regex, boolean decimal, @Nullable String thousands) {
         this.editText = editText;
@@ -32,9 +33,12 @@ public class AmountFormatWatcher implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable s) {
-        try
-        {
-            editText.removeTextChangedListener(this);
+        try {
+            if (flag) {
+                flag = false;
+                return;
+            }
+            int selectionEnd = this.editText.getSelectionEnd();
             String str = editText.getText().toString();
 
             if (this.decimal) {
@@ -49,19 +53,11 @@ public class AmountFormatWatcher implements TextWatcher {
             if(this.thousands != null && !str.equals("")) {
                 str = getDecimalFormattedString(str, this.thousands);
             }
-
-            if (str.length() > prevText.length()) {
-                editText.setSelection(str.length());
-            }
-
-            prevText = str;
+            flag = true;
             editText.setText(str);
-            editText.addTextChangedListener(this);
-        }
-        catch (Exception ex)
-        {
+            editText.setSelection(Math.min(selectionEnd, str.length()));
+        } catch (Exception ex) {
             ex.printStackTrace();
-            editText.addTextChangedListener(this);
         }
     }
 
