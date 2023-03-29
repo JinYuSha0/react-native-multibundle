@@ -26,7 +26,6 @@ public class CustomInputManager extends ReactTextInputManager {
 
     @ReactProp(name = "type", defaultInt = 0)
     public void setType(ReactEditText view, @Nullable int type) {
-        if (this.type == type) return;
         view.setInputType(type);
         this.type = type;
         if (type == 1) {

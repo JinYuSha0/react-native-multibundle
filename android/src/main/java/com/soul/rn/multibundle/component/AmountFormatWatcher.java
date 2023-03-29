@@ -13,6 +13,7 @@ public class AmountFormatWatcher implements TextWatcher {
     private String regex;
     private boolean decimal = false;
     private String thousands;
+    private String prevText;
 
     public AmountFormatWatcher(EditText editText, String regex, boolean decimal, @Nullable String thousands) {
         this.editText = editText;
@@ -49,8 +50,12 @@ public class AmountFormatWatcher implements TextWatcher {
                 str = getDecimalFormattedString(str, this.thousands);
             }
 
+            if (str.length() > prevText.length()) {
+                editText.setSelection(str.length());
+            }
+
+            prevText = str;
             editText.setText(str);
-            editText.setSelection(str.length());
             editText.addTextChangedListener(this);
         }
         catch (Exception ex)
