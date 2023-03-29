@@ -1,4 +1,4 @@
-import React from "react";
+import React, {memo} from "react";
 // @ts-ignore
 import TextInput from "./TextInput";
 import { TextInputProps } from "react-native";
@@ -10,7 +10,7 @@ export interface CustomTextInputProps extends TextInputProps {
   separator?: string;
 }
 
-function dealProps(props: CustomTextInputProps) {
+function extraProps(props: CustomTextInputProps) {
   const { onlyNumber, thousandth, separator } = props;
   const extra: Record<string, any> = {};
   if (onlyNumber) {
@@ -24,11 +24,14 @@ function dealProps(props: CustomTextInputProps) {
       extra.thousands = separator;
     }
   }
-  return { ...props, ...extra };
+  return extra;
 }
 
-export const CustomTextInput = React.forwardRef<TextInputProps, TextInput>(
+const TextInputMemo = memo(TextInput)
+
+export const CustomTextInput = memo(React.forwardRef<TextInputProps, TextInput>(
   (props, ref) => {
-    return <TextInput ref={ref} {...dealProps(props)} />;
+    const {type, thousands} = extraProps(props);
+    return <TextInputMemo ref={ref} {...props} type={type} thousands={thousands}/>;
   }
-);
+));
