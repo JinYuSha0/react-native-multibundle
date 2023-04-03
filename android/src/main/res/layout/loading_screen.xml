@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.soul.rn.multibundle.component.ActivityIndicatorView
+        android:id="@+id/activity_indicator"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_gravity="center"
+        android:layout_centerInParent="true"
+        app:aiv_color="#A2A3B0"
+        app:aiv_strokeWidth="2.5dp" />
+</RelativeLayout>

@@ -104,6 +104,8 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(null);
 
+    setContentView(R.layout.loading_screen);
+
     // 安卓8不能设置强制横屏会产生崩溃
     if (android.os.Build.VERSION.SDK_INT != Build.VERSION_CODES.O) {
       setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
