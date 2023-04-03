@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -239,7 +240,8 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
 
   protected void loadApp(String appKey, RNActivityDelegate delegate) {
     delegate.loadAppExternal(appKey);
-    this.setContentView(delegate.getReactRootView());
+    RelativeLayout relativeLayout = this.findViewById(R.id.container);
+    relativeLayout.addView(mDelegate.getReactRootView());
   }
 
   @Override

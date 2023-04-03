@@ -68,7 +68,7 @@ public class RNActivityDelegate extends ReactActivityDelegate {
 
   @Override
   protected void loadApp(String appKey) {
-    super.loadApp(appKey);
+    this.mReactDelegate.loadApp(appKey);
   }
 
   @Override
