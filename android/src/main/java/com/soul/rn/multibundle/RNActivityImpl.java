@@ -239,8 +239,7 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
 
   protected void loadApp(String appKey, RNActivityDelegate delegate) {
     delegate.loadAppExternal(appKey);
-    RelativeLayout relativeLayout = this.findViewById(R.id.container);
-    relativeLayout.addView(mDelegate.getReactRootView());
+    this.setContentView(mDelegate.getReactRootView());
   }
 
   @Override
