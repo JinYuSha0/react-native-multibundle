@@ -14,7 +14,6 @@ public class AmountFormatWatcher implements TextWatcher {
     private String regex;
     private boolean decimal = false;
     private String thousands;
-    private boolean flag = false;
 
     public AmountFormatWatcher(EditText editText, String regex, boolean decimal, @Nullable String thousands) {
         this.editText = editText;
@@ -34,12 +33,9 @@ public class AmountFormatWatcher implements TextWatcher {
     @Override
     public void afterTextChanged(Editable s) {
         try {
-            if (flag) {
-                flag = false;
-                return;
-            }
-            int selectionEnd = this.editText.getSelectionEnd();
+            editText.removeTextChangedListener(this);
             String str = editText.getText().toString();
+            int selectionEnd = this.editText.getSelectionEnd();
 
             if (this.decimal) {
                 if(str.startsWith(".")){
@@ -53,11 +49,12 @@ public class AmountFormatWatcher implements TextWatcher {
             if(this.thousands != null && !str.equals("")) {
                 str = getDecimalFormattedString(str, this.thousands);
             }
-            flag = true;
             editText.setText(str);
             editText.setSelection(Math.min(selectionEnd, str.length()));
         } catch (Exception ex) {
             ex.printStackTrace();
+        } finally {
+            editText.addTextChangedListener(this);
         }
     }
 
