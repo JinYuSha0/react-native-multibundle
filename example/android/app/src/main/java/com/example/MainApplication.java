@@ -2,6 +2,7 @@ package com.example;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Intent;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Lifecycle;
@@ -26,7 +27,7 @@ import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication, LifecycleObserver {
     public static ReactNativeHost mReactNativeHost;
-    public static final Boolean isDebug = false;
+    public static final Boolean isDebug = true;
 
     public static ReactNativeHost getReactNativeHost(Boolean isDebug, Application application, @Nullable Activity activity) {
         if (mReactNativeHost == null) {
@@ -64,7 +65,7 @@ public class MainApplication extends Application implements ReactApplication, Li
                                     .setUseDeveloperSupport(getUseDeveloperSupport())
                                     .setRedBoxHandler(getRedBoxHandler())
                                     .setJavaScriptExecutorFactory(getJavaScriptExecutorFactory())
-                                    .setUIImplementationProvider(getUIImplementationProvider())
+//                                    .setUIImplementationProvider(getUIImplementationProvider())
                                     .setJSIModulesPackage(getJSIModulePackage())
                                     .setInitialLifecycleState(LifecycleState.BEFORE_CREATE);
 
@@ -112,6 +113,11 @@ public class MainApplication extends Application implements ReactApplication, Li
             @Override
             public Boolean createReactContextInBackground() {
                 return true;
+            }
+
+            @Override
+            public void onNewIntent(Intent intent) {
+
             }
         });
     }
