@@ -118,8 +118,14 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(null);
 
-    mLoadingDialog = new LoadingDialog();
-    mLoadingDialog.show(this.getSupportFragmentManager(),"LoadingDialog");
+    if (isShowLoadingDialog()) {
+      try {
+        mLoadingDialog = new LoadingDialog();
+        mLoadingDialog.show(this.getSupportFragmentManager(),"LoadingDialog");
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
 
     // 安卓8不能设置强制横屏会产生崩溃
     if (android.os.Build.VERSION.SDK_INT != Build.VERSION_CODES.O) {
@@ -347,6 +353,10 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
 
   public abstract void processDeepLink(Intent intent);
 
+  protected boolean isShowLoadingDialog() {
+    return true;
+  }
+
   public static interface LoadScriptListener {
     public void onLoadComplete(boolean success, String bundlePath);
   }
@@ -361,8 +371,10 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
 
   protected void renderComplete() {
     if (mLoadingDialog != null) {
-      mLoadingDialog.dismiss();
-      mLoadingDialog = null;
+      try {
+        mLoadingDialog.dismiss();
+        mLoadingDialog = null;
+      } catch (Exception ignore) {}
     }
   }
 }

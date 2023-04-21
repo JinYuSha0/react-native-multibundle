@@ -2,6 +2,7 @@ package com.soul.rn.multibundle;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.os.Handler;
 import android.util.AttributeSet;
 
 import com.facebook.react.ReactRootView;
@@ -31,9 +32,15 @@ public class RNRootView extends ReactRootView {
     @Override
     protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
-        if (!mShowLoading && getChildCount() > 0) {
+        int count = getChildCount();
+        if (!mShowLoading && count > 0) {
             if (renderListener != null) {
-                renderListener.onSuccess(true);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        renderListener.onSuccess(count);
+                    }
+                },200);
             }
             mShowLoading = true;
         }
