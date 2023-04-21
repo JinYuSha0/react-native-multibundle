@@ -60,7 +60,7 @@ public class MultiBundle implements ReactPackage {
   public static String MULTI_BUNDLE_SERVER_HOST;
   public static String DEFAULT_MODULE_NAME;
   public static ReactNativeHostHolder mReactNativeHostHolder;
-  public static Class<ReactRootView> mReactRootViewClazz = ReactRootView.class;
+  public static Class<RNRootView> mReactRootViewClazz = RNRootView.class;
   public static Context mContext;
   public static Boolean BootstrapLoaded = false;
 
@@ -100,7 +100,7 @@ public class MultiBundle implements ReactPackage {
     }
   }
 
-  public static void setReactRootView(Class<ReactRootView> reactRootViewClass) {
+  public static void setReactRootView(Class<RNRootView> reactRootViewClass) {
     mReactRootViewClazz = reactRootViewClass;
   }
 

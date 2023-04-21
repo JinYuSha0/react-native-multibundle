@@ -54,4 +54,9 @@ public class RNActivity extends RNActivityImpl {
   protected void loadApp(String appKey, RNActivityDelegate delegate) {
     super.loadApp(appKey, delegate);
   }
+
+  @Override
+  protected void renderComplete() {
+    super.renderComplete();
+  }
 }

@@ -27,6 +27,7 @@ import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.facebook.react.modules.core.PermissionListener;
 import com.jaeger.library.StatusBarUtil;
+import com.soul.rn.multibundle.component.LoadingDialog;
 import com.soul.rn.multibundle.constant.BroadcastName;
 import com.soul.rn.multibundle.constant.ComponentType;
 import com.soul.rn.multibundle.constant.StatusBar;
@@ -40,6 +41,7 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
   private ReactNativeHost mReactNativeHost;
   private boolean isDev;
   private RNActivityDelegate mDelegate;
+  private LoadingDialog mLoadingDialog;
   protected String reallyFilePath = null;
   private static ArrayList<RNActivityImpl> mActivityList = new ArrayList();
 
@@ -86,10 +88,21 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
             try {
               Constructor constructor = MultiBundle.mReactRootViewClazz.getDeclaredConstructor(Context.class);
               constructor.setAccessible(true);
-              return (ReactRootView) constructor.newInstance(RNActivityImpl.this);
+              RNRootView rnRootView = (RNRootView) constructor.newInstance(RNActivityImpl.this);
+              rnRootView.setRenderListener(new Callback() {
+                @Override
+                public void onSuccess(Object result) {
+                  renderComplete();
+                }
+
+                @Override
+                public void onError(String errorMsg) {
+                }
+              });
+              return rnRootView;
             } catch (Exception ignore) {}
           }
-          return new ReactRootView(RNActivityImpl.this);
+          return new RNRootView(RNActivityImpl.this);
         }
 
         @Override
@@ -104,6 +117,9 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(null);
+
+    mLoadingDialog = new LoadingDialog();
+    mLoadingDialog.show(this.getSupportFragmentManager(),"LoadingDialog");
 
     // 安卓8不能设置强制横屏会产生崩溃
     if (android.os.Build.VERSION.SDK_INT != Build.VERSION_CODES.O) {
@@ -122,9 +138,7 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
 
     // 设置StatusBar样式
     setStatusBar(innerBundle.params);
-    setContentView(R.layout.loading_screen);
     mDelegate.onCreate(innerBundle.toBundle());
-    final Activity currActivity = this;
     ReactInstanceManager manager = mReactNativeHost.getReactInstanceManager();
     if (isDev) {
       initView();
@@ -339,5 +353,12 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
 
   protected final ReactInstanceManager getReactInstanceManager() {
     return mDelegate.getReactInstanceManager();
+  }
+
+  protected void renderComplete() {
+    if (mLoadingDialog != null) {
+      mLoadingDialog.dismiss();
+      mLoadingDialog = null;
+    }
   }
 }
