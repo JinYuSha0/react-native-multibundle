@@ -165,7 +165,11 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
             @Override
             public void onSuccess(Object result) {
               load();
-              self.unregisterReceiver((BroadcastReceiver) result);
+              try {
+                self.unregisterReceiver((BroadcastReceiver) result);
+              } catch (Exception e) {
+                e.printStackTrace();
+              }
             }
 
             @Override
