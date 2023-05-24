@@ -154,7 +154,7 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
     setStatusBar(innerBundle.params);
     mDelegate.onCreate(innerBundle.toBundle());
 
-    if (MultiBundle.updateStage == UpdateStage.NextTime) {
+    if (isDev || MultiBundle.updateStage == UpdateStage.NextTime) {
       init();
     } else {
       ThreadPool threadPool = ThreadPool.getInstance(this);
