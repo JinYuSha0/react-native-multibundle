@@ -95,12 +95,7 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
               rnRootView.setRenderListener(new Callback() {
                 @Override
                 public void onSuccess(Object result) {
-                  new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                      renderComplete();
-                    }
-                  },300);
+                  renderComplete();
                 }
 
                 @Override

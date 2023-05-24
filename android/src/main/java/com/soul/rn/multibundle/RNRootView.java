@@ -35,12 +35,7 @@ public class RNRootView extends ReactRootView {
         int count = getChildCount();
         if (!mShowLoading && count > 0) {
             if (renderListener != null) {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        renderListener.onSuccess(count);
-                    }
-                },200);
+                renderListener.onSuccess(count);
             }
             mShowLoading = true;
         }
