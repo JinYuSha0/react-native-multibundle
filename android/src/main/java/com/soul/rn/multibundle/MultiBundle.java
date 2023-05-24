@@ -28,6 +28,7 @@ import com.soul.rn.multibundle.constant.BroadcastName;
 import com.soul.rn.multibundle.constant.ComponentType;
 import com.soul.rn.multibundle.constant.EventName;
 import com.soul.rn.multibundle.constant.StorageKey;
+import com.soul.rn.multibundle.constant.UpdateStage;
 import com.soul.rn.multibundle.entity.Component;
 import com.soul.rn.multibundle.entity.ComponentSetting;
 import com.soul.rn.multibundle.iface.Callback;
@@ -38,6 +39,7 @@ import com.soul.rn.multibundle.utils.FileUtil;
 import com.soul.rn.multibundle.utils.RNConvert;
 import com.soul.rn.multibundle.utils.RequestManager;
 import com.soul.rn.multibundle.utils.SPUtil;
+import com.soul.rn.multibundle.utils.ThreadPool;
 import com.soul.rn.multibundle.utils.download.DownloadProgressListener;
 import com.soul.rn.multibundle.utils.download.DownloadTask;
 
@@ -63,7 +65,11 @@ public class MultiBundle implements ReactPackage {
   public static Class<RNRootView> mReactRootViewClazz = RNRootView.class;
   public static Context mContext;
   public static Boolean BootstrapLoaded = false;
-
+  public static UpdateStage updateStage = UpdateStage.ThisTime;
+  public static long CHECK_UPDATE_TIMEOUT_SECOND = 60;
+  public static long OKHTTP_CONNECT_TIMEOUT_SECOND = 5;
+  public static long OKHTTP_READ_TIMEOUT_SECOND = 5;
+  public static long OKHTTP_WRITE_TIMEOUT_SECOND = 5;
   public MultiBundle(Context context, String defaultModuleName, String multiBundleSeverHost) {
     DEFAULT_MODULE_NAME = defaultModuleName;
     MULTI_BUNDLE_SERVER_HOST = multiBundleSeverHost;
@@ -84,18 +90,6 @@ public class MultiBundle implements ReactPackage {
       ReactInstanceManager reactInstanceManager = reactNativeHostHolder.getReactNativeHost().getReactInstanceManager();
       if (!isDev() && !reactInstanceManager.hasStartedCreatingInitialContext()) {
         reactInstanceManager.createReactContextInBackground();
-        reactInstanceManager.addReactInstanceEventListener(new ReactInstanceEventListener() {
-          @Override
-          public void onReactContextInitialized(ReactContext context) {
-            RNDBHelper.Result result = RNDBHelper.selectByComponentName("Bootstrap");
-            if (result != null && result.FilePath != null) {
-              RNBundleLoader.loadScript(context,RNBundleLoader.getCatalystInstance(reactNativeHostHolder.getReactNativeHost()),result.FilePath,false);
-              BootstrapLoaded = true;
-              mContext.sendBroadcast(new Intent(BroadcastName.RN_BOOTSTRAP));
-            }
-            reactInstanceManager.removeReactInstanceEventListener(this);
-          }
-        });
       }
     }
   }
@@ -182,7 +176,9 @@ public class MultiBundle implements ReactPackage {
     }
   }
 
-  public static void checkUpdate(Context ctx, @Nullable Callback callback) {
+  public static ThreadPool.Promise checkUpdate(Context ctx, @Nullable Callback callback) {
+    final ThreadPool.Promise promise = ThreadPool.generateDeferred();
+
     try {
       final File downloadPath = ctx.getExternalFilesDir(null);
       final Context mContext = ctx;
@@ -205,6 +201,8 @@ public class MultiBundle implements ReactPackage {
             sendEventInner(EventName.CHECK_UPDATE_FAILURE, cause);
           } catch (Exception e) {
             e.printStackTrace();
+          } finally {
+            promise.reject(exception);
           }
         }
 
@@ -213,12 +211,15 @@ public class MultiBundle implements ReactPackage {
           try {
             if (callback != null) callback.onSuccess(result);
             sendEventInner(EventName.CHECK_UPDATE_SUCCESS, result);
+            ArrayList<ThreadPool.Promise> promises = new ArrayList<>();
             for (int i = 0; i < result.data.size(); i++) {
               final Component newComponent = result.data.get(i);
               final RNDBHelper.Result oldComponent = componentMap.get(newComponent.componentName);
               // 如果hash不相同 且版本大于当前版本 下载新的bundle包
               if (!oldComponent.Hash.equals(newComponent.hash) && newComponent.version > oldComponent.Version) {
                 sendEventInner(EventName.CHECK_UPDATE_DOWNLOAD_NEWS,newComponent);
+                ThreadPool.Promise deferred = ThreadPool.generateDeferred();
+                promises.add(deferred);
                 new Thread(new DownloadTask(
                         mContext,
                         newComponent.downloadUrl,
@@ -236,6 +237,7 @@ public class MultiBundle implements ReactPackage {
                           @Override
                           public void onDownloadFailure(Exception e) {
                             sendEventInner(EventName.CHECK_UPDATE_DOWNLOAD_NEWS_FAILURE,e.getMessage());
+                            deferred.resolve(null);
                           }
 
                           @Override
@@ -251,15 +253,29 @@ public class MultiBundle implements ReactPackage {
                             } catch (Exception e) {
                               e.printStackTrace();
                             } finally {
+                              deferred.resolve(file.getName());
                               file.delete();
                             }
                           }
-                        })
-                ).start();
+                        })).start();
               }
             }
+            ThreadPool.Promise[] promisesArgs = promises.toArray(new ThreadPool.Promise[promises.size()]);
+            ThreadPool.getInstance(mContext).all(promisesArgs).then(new ThreadPool.Promise() {
+              @Override
+              public void run() {
+                Object results = null;
+                try {
+                  results = this.getResult();
+                } catch (Exception e) {
+                  e.printStackTrace();
+                }
+                promise.resolve(results);
+              }
+            });
           } catch (Exception e) {
             e.printStackTrace();
+            promise.reject(e);
           }
         }
 
@@ -274,7 +290,9 @@ public class MultiBundle implements ReactPackage {
       }).request();
     } catch (Exception e) {
       e.printStackTrace();
+      promise.reject(e);
     }
+    return promise;
   }
 
   private static void setupComponent(Context ctx,String componentDir,Integer version) {

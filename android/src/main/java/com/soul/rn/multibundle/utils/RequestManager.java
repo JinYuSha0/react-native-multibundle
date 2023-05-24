@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.gson.Gson;
+import com.soul.rn.multibundle.MultiBundle;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -16,6 +17,7 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
+import kotlin.time.Duration;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -47,9 +49,9 @@ public class RequestManager {
 
     public RequestManager(Context context) {
         mOkHttpClient = new OkHttpClient().newBuilder()
-                .connectTimeout(10, TimeUnit.SECONDS)//设置超时时间
-                .readTimeout(10, TimeUnit.SECONDS)//设置读取超时时间
-                .writeTimeout(10, TimeUnit.SECONDS)//设置写入超时时间
+                .connectTimeout(MultiBundle.OKHTTP_CONNECT_TIMEOUT_SECOND, TimeUnit.SECONDS)//设置超时时间
+                .readTimeout(MultiBundle.OKHTTP_READ_TIMEOUT_SECOND, TimeUnit.SECONDS)//设置读取超时时间
+                .writeTimeout(MultiBundle.OKHTTP_WRITE_TIMEOUT_SECOND, TimeUnit.SECONDS)//设置写入超时时间
                 .build();
         //初始化Handler
         mOkHttpHandler = new Handler(context.getMainLooper());

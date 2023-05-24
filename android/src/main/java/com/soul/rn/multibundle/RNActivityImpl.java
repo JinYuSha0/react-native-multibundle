@@ -10,6 +10,7 @@ import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.RelativeLayout;
@@ -31,7 +32,9 @@ import com.soul.rn.multibundle.component.LoadingDialog;
 import com.soul.rn.multibundle.constant.BroadcastName;
 import com.soul.rn.multibundle.constant.ComponentType;
 import com.soul.rn.multibundle.constant.StatusBar;
+import com.soul.rn.multibundle.constant.UpdateStage;
 import com.soul.rn.multibundle.iface.Callback;
+import com.soul.rn.multibundle.utils.ThreadPool;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -92,7 +95,12 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
               rnRootView.setRenderListener(new Callback() {
                 @Override
                 public void onSuccess(Object result) {
-                  renderComplete();
+                  new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                      renderComplete();
+                    }
+                  },300);
                 }
 
                 @Override
@@ -145,6 +153,28 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
     // 设置StatusBar样式
     setStatusBar(innerBundle.params);
     mDelegate.onCreate(innerBundle.toBundle());
+
+    if (MultiBundle.updateStage == UpdateStage.NextTime) {
+      init();
+    } else {
+      ThreadPool threadPool = ThreadPool.getInstance(this);
+      threadPool
+              .race(ThreadPool.generateTimeoutPromise(MultiBundle.CHECK_UPDATE_TIMEOUT_SECOND*1000), MultiBundle.checkUpdate(this,null))
+              .then(new ThreadPool.Promise() {
+                @Override
+                public void run() {
+                  RNActivityImpl.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                      init();
+                    }
+                  });
+                }
+              });
+    }
+  }
+
+  public void init() {
     ReactInstanceManager manager = mReactNativeHost.getReactInstanceManager();
     if (isDev) {
       initView();
@@ -166,25 +196,10 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
         mReactNativeHost.getReactInstanceManager().createReactContextInBackground();
       } else {
         if (!MultiBundle.BootstrapLoaded) {
-          RNActivityImpl self = this;
-          Callback callback = new Callback() {
-            @Override
-            public void onSuccess(Object result) {
-              load();
-              try {
-                self.unregisterReceiver((BroadcastReceiver) result);
-              } catch (Exception e) {
-                e.printStackTrace();
-              }
-            }
-
-            @Override
-            public void onError(String errorMsg) {
-            }
-          };
-          IntentFilter intentFilter = new IntentFilter();
-          intentFilter.addAction(BroadcastName.RN_BOOTSTRAP);
-          this.registerReceiver(new RNBroadcastReceiver(callback), intentFilter);
+          RNDBHelper.Result result = RNDBHelper.selectByComponentName("Bootstrap");
+          RNBundleLoader.loadScript(this,RNBundleLoader.getCatalystInstance(MultiBundle.mReactNativeHostHolder.getReactNativeHost()),result.FilePath,false);
+          MultiBundle.BootstrapLoaded = true;
+          load();
         } else {
           load();
         }
