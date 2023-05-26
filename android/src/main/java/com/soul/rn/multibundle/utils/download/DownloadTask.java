@@ -23,7 +23,7 @@ public class DownloadTask implements Runnable {
   @Override
   public void run() {
     try {
-      loader = new FileDownloadered(context, path, filename, saveDir, 1);
+      loader = new FileDownloadered(context, path, filename, saveDir, 1, downloadProgressListener);
       loader.download(this.downloadProgressListener);
     } catch (Exception e) {
       this.downloadProgressListener.onDownloadFailure(e);

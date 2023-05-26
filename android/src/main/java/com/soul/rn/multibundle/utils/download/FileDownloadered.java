@@ -92,7 +92,7 @@ public class FileDownloadered {
    * @param threadNum  下载线程数
    * @return
    */
-  public FileDownloadered(Context context, String downloadUrl, String filename, File fileSaveDir, int threadNum)
+  public FileDownloadered(Context context, String downloadUrl, String filename, File fileSaveDir, int threadNum, DownloadProgressListener downloadProgressListener)
   {
     try {
       this.context = context;     //获取上下文对象,赋值
@@ -118,6 +118,7 @@ public class FileDownloadered {
       if(conn.getResponseCode() == RESPONSEOK)
       {
         this.fileSize = conn.getContentLength();  //根据响应获得文件大小
+        downloadProgressListener.onDownloadStart(fileSize);
         if(this.fileSize <= 0)throw new RuntimeException("不知道文件大小");  //文件长度小于等于0时抛出运行时异常
         if (filename == null) filename = getFileName(conn);      //获取文件名称
         this.saveFile = new File(fileSaveDir,filename);  //根据文件保存目录和文件名保存文件

@@ -1,18 +1,19 @@
 package com.soul.rn.multibundle;
 
+import static com.soul.rn.multibundle.utils.MathUtil.getRandomString;
+
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Pair;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactPackage;
-import com.facebook.react.ReactRootView;
-import com.facebook.react.ReactInstanceEventListener;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -24,15 +25,15 @@ import com.facebook.react.uimanager.ViewManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.soul.rn.multibundle.component.CustomInputManager;
-import com.soul.rn.multibundle.constant.BroadcastName;
+import com.soul.rn.multibundle.component.ProgressBarDialog;
 import com.soul.rn.multibundle.constant.ComponentType;
 import com.soul.rn.multibundle.constant.EventName;
 import com.soul.rn.multibundle.constant.StorageKey;
 import com.soul.rn.multibundle.constant.UpdateStage;
 import com.soul.rn.multibundle.entity.Component;
 import com.soul.rn.multibundle.entity.ComponentSetting;
-import com.soul.rn.multibundle.iface.Callback;
 import com.soul.rn.multibundle.entity.MyResponse;
+import com.soul.rn.multibundle.iface.Callback;
 import com.soul.rn.multibundle.iface.ReactNativeHostHolder;
 import com.soul.rn.multibundle.utils.AppVersionInfoUtil;
 import com.soul.rn.multibundle.utils.FileUtil;
@@ -49,13 +50,12 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.lang.reflect.Type;
-import java.util.Arrays;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-
-import static com.soul.rn.multibundle.utils.MathUtil.getRandomString;
 
 public class MultiBundle implements ReactPackage {
   public static final String PREFIX = getRandomString(6) + "_";
@@ -70,6 +70,11 @@ public class MultiBundle implements ReactPackage {
   public static long OKHTTP_CONNECT_TIMEOUT_SECOND = 5;
   public static long OKHTTP_READ_TIMEOUT_SECOND = 5;
   public static long OKHTTP_WRITE_TIMEOUT_SECOND = 5;
+  public static boolean PROGRESS_BAR_SHOW = true;
+  public static Integer PROGRESS_BAR_MARGIN_BOTTOM = null;
+  private static ProgressBarDialog progressBarDialog = null;
+  private static HashMap<String, Pair<Integer, Integer>> PROGRESS_MAP = new HashMap<>();
+
   public MultiBundle(Context context, String defaultModuleName, String multiBundleSeverHost) {
     DEFAULT_MODULE_NAME = defaultModuleName;
     MULTI_BUNDLE_SERVER_HOST = multiBundleSeverHost;
@@ -212,6 +217,11 @@ public class MultiBundle implements ReactPackage {
             if (callback != null) callback.onSuccess(result);
             sendEventInner(EventName.CHECK_UPDATE_SUCCESS, result);
             ArrayList<ThreadPool.Promise> promises = new ArrayList<>();
+            Activity currActivity = RNActivity.getActivity();
+            if (PROGRESS_BAR_SHOW && result.data.size() > 0 && currActivity != null && !currActivity.isFinishing()) {
+              progressBarDialog = new ProgressBarDialog(mContext,PROGRESS_BAR_MARGIN_BOTTOM);
+              progressBarDialog.show(RNActivity.getActivity().getSupportFragmentManager(),"ProgressDialog");
+            }
             for (int i = 0; i < result.data.size(); i++) {
               final Component newComponent = result.data.get(i);
               final RNDBHelper.Result oldComponent = componentMap.get(newComponent.componentName);
@@ -220,6 +230,7 @@ public class MultiBundle implements ReactPackage {
                 sendEventInner(EventName.CHECK_UPDATE_DOWNLOAD_NEWS,newComponent);
                 ThreadPool.Promise deferred = ThreadPool.generateDeferred();
                 promises.add(deferred);
+                PROGRESS_MAP.put(newComponent.componentName, null);
                 new Thread(new DownloadTask(
                         mContext,
                         newComponent.downloadUrl,
@@ -227,7 +238,23 @@ public class MultiBundle implements ReactPackage {
                         downloadPath,
                         new DownloadProgressListener() {
                           @Override
+                          public void onDownloadStart(int fileSize) {
+                            synchronized (PROGRESS_MAP) {
+                              if (PROGRESS_MAP.get(newComponent.componentName) == null) {
+                                PROGRESS_MAP.put(newComponent.componentName, new Pair<>(fileSize,0));
+                              }
+                            }
+                          }
+
+                          @Override
                           public void onDownloadSize(int downloadedSize, int fileSize) {
+                            synchronized (PROGRESS_MAP) {
+                              if (PROGRESS_MAP.get(newComponent.componentName) != null) {
+                                Pair<Integer, Integer> old = PROGRESS_MAP.get(newComponent.componentName);
+                                PROGRESS_MAP.put(newComponent.componentName, new Pair<>(old.first, downloadedSize));
+                              }
+                              calcTotalProgress();
+                            }
                             WritableMap progress = Arguments.createMap();
                             progress.putString("componentName",newComponent.componentName);
                             progress.putDouble("progress", (double) downloadedSize / (double) fileSize);
@@ -270,6 +297,12 @@ public class MultiBundle implements ReactPackage {
                 } catch (Exception e) {
                   e.printStackTrace();
                 }
+                currActivity.runOnUiThread(new Runnable() {
+                  @Override
+                  public void run() {
+                    hideProgressBarDialog();
+                  }
+                });
                 promise.resolve(results);
               }
             });
@@ -333,6 +366,41 @@ public class MultiBundle implements ReactPackage {
 
   public static void sendEventInner(String eventName, Object eventData) {
     sendEvent(PREFIX+eventName,eventData);
+  }
+
+  public static void hideProgressBarDialog() {
+    try {
+      if (progressBarDialog != null) {
+        progressBarDialog.dismiss();
+        progressBarDialog = null;
+      }
+    } catch (Exception ignore) {
+      ignore.printStackTrace();
+    }
+  }
+
+  private static void calcTotalProgress() {
+    synchronized (PROGRESS_MAP) {
+      try {
+        boolean getAllFileSize = PROGRESS_MAP.values().contains(null);
+        if (getAllFileSize) return;
+        Pair<Integer, Integer>[] arr = PROGRESS_MAP.values().toArray(new Pair[PROGRESS_MAP.values().size()]);
+        int fileSize = 0, downloadSize = 0;
+        for (int i = 0; i < arr.length; i++) {
+          fileSize += arr[i].first;
+          downloadSize += arr[i].second;
+        }
+        DecimalFormat df = new DecimalFormat("0.00");
+        String resultStr = df.format((float)downloadSize / fileSize);
+        float resultFloat = Float.parseFloat(resultStr);
+        int resultInt = (int)(resultFloat * 100);
+        if (progressBarDialog != null) {
+          progressBarDialog.setProgress(resultInt);
+        }
+      } catch (Exception ignore) {
+        ignore.printStackTrace();
+      }
+    }
   }
 
   @NonNull

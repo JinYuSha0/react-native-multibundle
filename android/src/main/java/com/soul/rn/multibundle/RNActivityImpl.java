@@ -1,19 +1,13 @@
 package com.soul.rn.multibundle;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -29,7 +23,6 @@ import com.facebook.react.modules.core.PermissionAwareActivity;
 import com.facebook.react.modules.core.PermissionListener;
 import com.jaeger.library.StatusBarUtil;
 import com.soul.rn.multibundle.component.LoadingDialog;
-import com.soul.rn.multibundle.constant.BroadcastName;
 import com.soul.rn.multibundle.constant.ComponentType;
 import com.soul.rn.multibundle.constant.StatusBar;
 import com.soul.rn.multibundle.constant.UpdateStage;
@@ -162,6 +155,7 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
                     @Override
                     public void run() {
                       init();
+                      MultiBundle.hideProgressBarDialog();
                     }
                   });
                 }
