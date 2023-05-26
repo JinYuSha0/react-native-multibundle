@@ -56,6 +56,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MultiBundle implements ReactPackage {
   public static final String PREFIX = getRandomString(6) + "_";
@@ -74,6 +75,8 @@ public class MultiBundle implements ReactPackage {
   public static Integer PROGRESS_BAR_MARGIN_BOTTOM = null;
   private static ProgressBarDialog progressBarDialog = null;
   private static HashMap<String, Pair<Integer, Integer>> PROGRESS_MAP = new HashMap<>();
+  private static ThreadPool.Promise CHECK_UPDATE_PROMISE;
+  private static AtomicBoolean CHECK_UPDATE_FLAG = new AtomicBoolean(false);
 
   public MultiBundle(Context context, String defaultModuleName, String multiBundleSeverHost) {
     DEFAULT_MODULE_NAME = defaultModuleName;
@@ -177,14 +180,24 @@ public class MultiBundle implements ReactPackage {
 
   public static void checkUpdate() {
     if (mContext != null) {
-      checkUpdate(mContext, null);
+      checkUpdate(mContext, true, null);
     }
   }
 
-  public static ThreadPool.Promise checkUpdate(Context ctx, @Nullable Callback callback) {
-    final ThreadPool.Promise promise = ThreadPool.generateDeferred();
-
+  public static ThreadPool.Promise checkUpdate(Context ctx, boolean manual, @Nullable Callback callback) {
     try {
+      if (CHECK_UPDATE_FLAG.get() && CHECK_UPDATE_PROMISE != null) {
+        return CHECK_UPDATE_PROMISE;
+      }
+      CHECK_UPDATE_FLAG.set(true);
+      CHECK_UPDATE_PROMISE = ThreadPool.generateDeferred();
+      CHECK_UPDATE_PROMISE.then(new ThreadPool.Promise() {
+        @Override
+        public void run() {
+          CHECK_UPDATE_FLAG.set(false);
+          CHECK_UPDATE_PROMISE = null;
+        }
+      });
       final File downloadPath = ctx.getExternalFilesDir(null);
       final Context mContext = ctx;
       final HashMap<String, RNDBHelper.Result> componentMap = RNDBHelper.selectAllMap();
@@ -207,7 +220,9 @@ public class MultiBundle implements ReactPackage {
           } catch (Exception e) {
             e.printStackTrace();
           } finally {
-            promise.reject(exception);
+            if (CHECK_UPDATE_PROMISE != null) {
+              CHECK_UPDATE_PROMISE.reject(exception);
+            }
           }
         }
 
@@ -218,7 +233,7 @@ public class MultiBundle implements ReactPackage {
             sendEventInner(EventName.CHECK_UPDATE_SUCCESS, result);
             ArrayList<ThreadPool.Promise> promises = new ArrayList<>();
             Activity currActivity = RNActivity.getActivity();
-            if (PROGRESS_BAR_SHOW && result.data.size() > 0 && currActivity != null && !currActivity.isFinishing()) {
+            if (!manual && PROGRESS_BAR_SHOW && result.data.size() > 0 && currActivity != null && !currActivity.isFinishing()) {
               progressBarDialog = new ProgressBarDialog(mContext,PROGRESS_BAR_MARGIN_BOTTOM);
               progressBarDialog.show(RNActivity.getActivity().getSupportFragmentManager(),"ProgressDialog");
             }
@@ -303,12 +318,16 @@ public class MultiBundle implements ReactPackage {
                     hideProgressBarDialog();
                   }
                 });
-                promise.resolve(results);
+                if (CHECK_UPDATE_PROMISE != null) {
+                  CHECK_UPDATE_PROMISE.resolve(results);
+                }
               }
             });
           } catch (Exception e) {
             e.printStackTrace();
-            promise.reject(e);
+            if (CHECK_UPDATE_PROMISE != null) {
+              CHECK_UPDATE_PROMISE.reject(e);
+            }
           }
         }
 
@@ -323,9 +342,11 @@ public class MultiBundle implements ReactPackage {
       }).request();
     } catch (Exception e) {
       e.printStackTrace();
-      promise.reject(e);
+      if (CHECK_UPDATE_PROMISE != null) {
+        CHECK_UPDATE_PROMISE.reject(e);
+      }
     }
-    return promise;
+    return CHECK_UPDATE_PROMISE;
   }
 
   private static void setupComponent(Context ctx,String componentDir,Integer version) {

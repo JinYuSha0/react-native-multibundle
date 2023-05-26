@@ -147,7 +147,7 @@ public abstract class RNActivityImpl extends androidx.fragment.app.FragmentActiv
     } else {
       ThreadPool threadPool = ThreadPool.getInstance(this);
       threadPool
-              .race(ThreadPool.generateTimeoutPromise(MultiBundle.CHECK_UPDATE_TIMEOUT_SECOND*1000), MultiBundle.checkUpdate(this,null))
+              .race(ThreadPool.generateTimeoutPromise(MultiBundle.CHECK_UPDATE_TIMEOUT_SECOND*1000), MultiBundle.checkUpdate(this,false,null))
               .then(new ThreadPool.Promise() {
                 @Override
                 public void run() {

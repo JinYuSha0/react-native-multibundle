@@ -59,7 +59,7 @@ public class MultiBundleModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void checkUpdate(Promise promise) {
-        MultiBundle.checkUpdate(getCurrentActivity(), new Callback() {
+        MultiBundle.checkUpdate(getCurrentActivity(),true, new Callback() {
             @Override
             public void onSuccess(Object result) {
                 promise.resolve(RNConvert.convert(result));
